@@ -1,0 +1,151 @@
+import BookingModel from "../model/Booking.model.js";
+import Trainmodel from "../model/train.model.js";
+import catchasynerror from "../middleware/catchasynerror.middleware.js";
+import Errorhandler from "../utils/Errorhandler.utils.js";
+export const CreateBooking = catchasynerror(async (req, res, next) => {
+  const {
+    trainid,
+    date,
+    from_station,
+    to_station,
+    coachType,
+    seatNumber,
+    categoryName,
+  } = req.body;
+  // we will receive this information by the users
+  //now implementing the logic of the this seatnumber is booked or not at this date for from_station to to_station
+  const existingbooking = await BookingModel.find({
+    date,
+    $or: [
+      { from_station: { $in: [from_station, to_station] } },
+      { to_station: { $in: [from_station, to_station] } },
+    ],
+    seats: {
+      coachType,
+      categoryName,
+      seatNumber,
+    },
+  });
+  // const overlap = existingbooking.some((booking) => {
+  //   const isFromStationOverlap =
+  //     booking.from_station !== to_station &&
+  //     booking.from_station !== from_station;
+  //   const isToStationOverlap =
+  //     booking.to_station !== to_station && booking.to_station !== from_station;
+  //   return !(isFromStationOverlap && isToStationOverlap);
+  // });
+  const train = await Trainmodel.findById(trainid);
+  const intermediate_stations = train.intermediate_stations;
+  const overlap = existingbooking.some((booking) => {
+    const fromIndex = intermediate_stations.indexOf(from_station);
+    const toIndex = intermediate_stations.indexOf(to_station);
+    const bookingFromIndex = intermediate_stations.indexOf(
+      booking.from_station
+    );
+    const bookingToIndex = intermediate_stations.indexOf(booking.to_station);
+
+    // Check if the booking overlaps with the specified journey segment
+    return (
+      (bookingFromIndex <= fromIndex && bookingToIndex >= fromIndex) ||
+      (bookingFromIndex <= toIndex && bookingToIndex >= toIndex) ||
+      (bookingFromIndex >= fromIndex && bookingToIndex <= toIndex)
+    );
+  });
+
+  if (overlap) {
+    return next(
+      new Errorhandler(
+        "Seats between selected stations are already booked.",
+        400
+      )
+    );
+  }
+  const Booking = await BookingModel.find({
+    date,
+    from_station,
+    to_station,
+  });
+
+  const booked_seats = Booking.filter((booking) =>
+    // booking.seats.some(
+    //   (seat) => seat.coachType === coachType && seat.seatNumber === seatNumber
+    // )
+    {
+      return (
+        booking.seats.coachType === coachType &&
+        booking.seats.categoryName == categoryName &&
+        booking.seats.seatNumber === seatNumber
+      );
+    }
+  );
+  const isAvailable = booked_seats.length === 0;
+  console.log("seat is available ", isAvailable);
+  if (!isAvailable) {
+    return next(
+      new Errorhandler(
+        "Seats between selected stations are already booked.",
+        404
+      )
+    );
+  }
+  //now creating the booking of the train for from_station to to_station
+  const seats = { coachType: coachType, categoryName, seatNumber: seatNumber };
+  const booking = await BookingModel.create({
+    trainid,
+    date,
+    from_station,
+    to_station,
+    seats,
+  });
+  res.status(200).json({
+    success: true,
+    message: "your ticket booked successfully",
+    booking,
+  });
+});
+export const getavailableseatcounts = catchasynerror(async (req, res, next) => {
+  try {
+    const { trainid, date, from_station, to_station, coachtype } = req.body;
+    const train = await Trainmodel.findById(trainid);
+    if (!train) {
+      return next(new Errorhandler("train not found", 404));
+    }
+
+    const existcoach = train.coaches.find((coach) => {
+      return coach.coachType === coachtype;
+    });
+    if (!existcoach) {
+      return next(
+        new Errorhandler(`${coachtype} is not found in this train `, 404)
+      );
+    }
+    //now calculate the total number of seats in the entered coachtype
+    const totalseats = existcoach.coachcategory.reduce(
+      (acc, category) => acc + category.seats.length,
+      0
+    );
+
+    //calculate the booked seats of the entered coach category
+    // const seats={}
+    // seats.coachType=coachtype;
+    const bookedseats = await BookingModel.find({
+      trainid,
+      date,
+      from_station,
+      to_station,
+      "seats.coachType": coachtype,
+    });
+    const bookedcoachcounts = bookedseats.reduce((acc, curr) => acc + 1, 0);
+    const availablecounts = totalseats - bookedcoachcounts;
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      availablecounts,
+      totalseats,
+      bookedcoachcounts
+    });
+  } catch (error) {
+    next(new Errorhandler(error?.message, 500));
+  }
+});
+
