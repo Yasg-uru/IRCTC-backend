@@ -1,7 +1,12 @@
-import express from "express"
-import { create_Train, searchtrainbyorigintodestination } from "../controller/Train.controller.js"
-const router=express.Router()
+import express from "express";
+import {
+  create_Train,
+  getAvailableSeatCountsForAllCoachTypes,
+  searchtrainbyorigintodestination,
+} from "../controller/Train.controller.js";
+const router = express.Router();
 
-router.route('/create').post(create_Train)
-router.route('/search').get(searchtrainbyorigintodestination)
-export default router
+router.route("/create").post(create_Train);
+router.route("/search").get(searchtrainbyorigintodestination);
+router.route("/getavailability").get(getAvailableSeatCountsForAllCoachTypes);
+export default router;
