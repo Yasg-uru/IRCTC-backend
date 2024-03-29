@@ -89,7 +89,12 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
     );
   }
   //now creating the booking of the train for from_station to to_station
-  const seats = { coachType: coachType, categoryName, seatNumber: seatNumber };
+  const seats = {
+    coachType: coachType,
+    categoryName,
+    seatNumber: seatNumber,
+    isBooked: true,
+  };
   const booking = await BookingModel.create({
     trainid,
     date,
@@ -142,10 +147,37 @@ export const getavailableseatcounts = catchasynerror(async (req, res, next) => {
       message: "successfully",
       availablecounts,
       totalseats,
-      bookedcoachcounts
+      bookedcoachcounts,
     });
   } catch (error) {
     next(new Errorhandler(error?.message, 500));
   }
 });
-
+export const vacant_booked_seat_charts = catchasynerror(
+  async (req, res, next) => {
+    try {
+      let { trainid, from_station, to_station, coachType, categoryName, date } =
+        req.body;
+      date = new Date(date);
+      const dateString = date.toISOString().split("T")[0] + "T08:00:00Z";
+      console.log("this is date string :", dateString);
+      const bookings = await BookingModel.find({
+        date: dateString,
+        trainid,
+        from_station,
+        to_station,
+        "seats.coachType": coachType,
+        "seats.categoryName": categoryName,
+      });
+      if (!bookings) {
+        return next(new Errorhandler("bookings not found ", 404));
+      }
+      res.status(200).json({
+        success: true,
+        Bookings: bookings,
+      });
+    } catch (error) {
+      return next(new Errorhandler(error?.message, 500));
+    }
+  }
+);
