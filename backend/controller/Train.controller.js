@@ -87,8 +87,9 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
   async (req, res, next) => {
     try {
       const { trainid, fromstation, tostation } = req.body;
-      let { date } = req.body;
 
+      let { date, coachTypes } = req.body;
+      coachTypes = coachTypes || [];
       // const date = new Date(Date.now());
       date = date ? new Date(date) : new Date(Date.now());
       console.log("this is date.now is :", date);
@@ -112,6 +113,9 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
       //now we are using the for of loop
       for (const coach of train.coaches) {
         const coachType = coach.coachType;
+        if (coachTypes.length > 0 && !coachTypes.includes(coachType)) {
+          continue;
+        }
         const totalseats = coach.coachcategory.reduce(
           (acc, category) => acc + category.seats.length,
           0
@@ -141,11 +145,3 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
     }
   }
 );
-
-export const filtersearch=catchasynerror(async (req,res,next)=>{
-  try {
-    
-  } catch (error) {
-    
-  }
-})
