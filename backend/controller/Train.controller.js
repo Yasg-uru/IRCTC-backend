@@ -56,7 +56,7 @@ export const searchtrainbyorigintodestination = catchasynerror(
   async (req, res, next) => {
     try {
       const { fromstation, tostation } = req.body;
-      const train = await Trainmodel.findOne({
+      const train = await Trainmodel.find({
         intermediate_stations: {
           $all: [fromstation, tostation],
         },
@@ -64,25 +64,75 @@ export const searchtrainbyorigintodestination = catchasynerror(
       if (!train) {
         return next(new Errorhandler("train not found ", 404));
       }
-      const fromstation_index = train.intermediate_stations.findIndex(
-        (station) => station === fromstation
-      );
-      const tostation_index = train.intermediate_stations.findIndex(
-        (station) => station === tostation
-      );
-      if (fromstation_index >= tostation_index) {
-        return next(new Errorhandler("train is not available ", 404));
+      const resultarray = [];
+      for (const Train of train) {
+        const fromstation_index = Train.intermediate_stations.findIndex(
+          (station) => station === fromstation
+        );
+        const tostation_index = Train.intermediate_stations.findIndex(
+          (station) => station === tostation
+        );
+        if (fromstation_index >= tostation_index) {
+          // return next(new Errorhandler("train is not available ", 404));
+          continue;
+        }
+        resultarray.push(Train);
       }
+
       res.status(200).json({
         success: true,
-        train,
+        resultarray,
       });
     } catch (error) {
       next(new Errorhandler(error?.message, 500));
     }
   }
 );
+//creating controller for finding the cost of the ticket for particular train with their particular coach fromstation tostation
 
+export const getcostofticket = catchasynerror(async (req, res, next) => {
+  try {
+    const { trainid, fromstation, tostation, coachType } = req.body;
+    const train = await Trainmodel.findById(trainid);
+    if (!train) {
+      return next(new Errorhandler("train not found ", 404));
+    }
+    const isexistcoachtype = train.coaches.find((coach) => {
+      return coach.coachType === coachType;
+    });
+    if (!isexistcoachtype) {
+      return next(new Errorhandler("Invalid coachtype", 404));
+    }
+
+    //finding the indexes of the fromstation and tostation
+
+    const fromindex = train.intermediate_stations.indexOf(fromstation);
+    const tostationindex = train.intermediate_stations.indexOf(tostation);
+    if (
+      fromindex === -1 ||
+      tostationindex === -1 ||
+      fromindex >= tostationindex
+    ) {
+      return next(new Errorhandler("Invalid stations "));
+    }
+    let totalfare = 0;
+
+    for (let i = fromindex; i <= tostationindex; i++) {
+      console.log("this is inside loop ");
+      const station = train.intermediate_stations[i];
+      totalfare += train.price.get(station);
+    }
+    if (coachType === "AC") {
+      totalfare *= 1.5;
+    }
+    res.status(200).json({
+      success: true,
+      totalfare,
+    });
+  } catch (error) {
+    return next(new Errorhandler(error?.message, 500));
+  }
+});
 export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
   async (req, res, next) => {
     try {
@@ -145,3 +195,111 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
     }
   }
 );
+function getSeatType(seatNumber) {
+  // Calculate theseatNumber when dividing seatNumber by 16
+
+  // Determine the seat type based on theseatNumber
+  if (
+    seatNumber === 1 ||
+    seatNumber === 4 ||
+    seatNumber === 9 ||
+    seatNumber === 12 ||
+    seatNumber === 17 ||
+    seatNumber === 20 ||
+    seatNumber === 25 ||
+    seatNumber === 28 ||
+    seatNumber === 33 ||
+    seatNumber === 36 ||
+    seatNumber === 41 ||
+    seatNumber === 44 ||
+    seatNumber === 49 ||
+    seatNumber === 52 ||
+    seatNumber === 57 ||
+    seatNumber === 60
+  ) {
+    return { seatNumber, seatType: "Lower" };
+  } else if (
+    seatNumber === 2 ||
+    seatNumber === 5 ||
+    seatNumber === 10 ||
+    seatNumber === 13 ||
+    seatNumber === 18 ||
+    seatNumber === 21 ||
+    seatNumber === 26 ||
+    seatNumber === 29 ||
+    seatNumber === 34 ||
+    seatNumber === 37 ||
+    seatNumber === 42 ||
+    seatNumber === 45 ||
+    seatNumber === 50 ||
+    seatNumber === 53 ||
+    seatNumber === 58
+  ) {
+    return { seatNumber, seatType: "Middle" };
+  } else if (
+    seatNumber === 3 ||
+    seatNumber === 6 ||
+    seatNumber === 11 ||
+    seatNumber === 14 ||
+    seatNumber === 19 ||
+    seatNumber === 22 ||
+    seatNumber === 27 ||
+    seatNumber === 30 ||
+    seatNumber === 35 ||
+    seatNumber === 38 ||
+    seatNumber === 43 ||
+    seatNumber === 46 ||
+    seatNumber === 51 ||
+    seatNumber === 54 ||
+    seatNumber === 59
+  ) {
+    return { seatNumber, seatType: "Upper" };
+  } else if (
+    seatNumber === 7 ||
+    seatNumber === 15 ||
+    seatNumber === 23 ||
+    seatNumber === 31 ||
+    seatNumber === 39 ||
+    seatNumber === 47 ||
+    seatNumber === 55 ||
+    seatNumber === 63 ||
+    seatNumber === 71
+  ) {
+    return { seatNumber, seatType: "Side Lower" };
+  } else {
+    return { seatNumber, seatType: "Side Upper" };
+  }
+}
+
+export const assignseatsforallcoaches = catchasynerror(
+  async (req, res, next) => {
+    try {
+      const { trainid } = req.body;
+      const train = await Trainmodel.findById(trainid);
+      if (!train) {
+        return next(new Errorhandler("train not found ", 404));
+      }
+      const arrayofseats=[]
+      train.coaches.forEach((coach) => {
+        coach.coachcategory.forEach((category) => {
+          category.seats.forEach((seat) => {
+            // console.log(getSeatType(seat.seatNumber));
+            const seattype = getSeatType(seat.seatNumber);
+            arrayofseats.push(seattype)
+            seat.seatType = seattype;
+            // console.log("this is a seat type :",seat.seatType)
+          });
+        });
+      });
+      const savedtrain=await train.save();
+      res.status(200).json({
+        success: true,
+        savedtrain,
+        arrayofseats
+      });
+    } catch (error) {
+      return next(new Errorhandler(error?.message, 500));
+    }
+  }
+);
+
