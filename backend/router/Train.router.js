@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 router.route("/create").post(create_Train);
-router.route("/search").get(searchtrainbyorigintodestination);
+router.route("/search").post(searchtrainbyorigintodestination);
 router.route("/getavailability").get(getAvailableSeatCountsForAllCoachTypes);
 router.route("/price/ticket").get(getcostofticket)
 router.route("/assignseat").get(assignseatsforallcoaches)
