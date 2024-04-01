@@ -1,20 +1,53 @@
 import { useEffect, useState } from "react";
 import { FaExchangeAlt } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { LuRefreshCcw } from "react-icons/lu";
+import toast from "react-hot-toast";
+import {
+  Searchtrain,
+  getpricecoachwise,
+  getseatavailability,
+} from "../reducx-toolkit/TrainSlice";
+import { searchtrainbyorigintodestination } from "../../../backend/controller/Train.controller";
 function Result() {
   const location = useLocation();
 
   const [fromstation, setfromstation] = useState(location?.state?.fromstation);
   const [tostation, settostation] = useState(location?.state?.tostation);
   const [dateselect, setselectdate] = useState();
-
+  const [prices, setPrices] = useState([]);
+  const [openindex, setopenindex] = useState(null);
+  const handleopenindex = (index) => {
+    setopenindex(index === openindex ? null : index);
+  };
   const handleexchange = () => {
     const temp = fromstation;
     setfromstation(tostation);
     settostation(temp);
   };
+  let { trainarray } = useSelector((state) => state.train);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    trainarray?.forEach(async (train) => {
+      await dispatch(
+        getpricecoachwise({
+          fromstation: fromstation,
+          tostation: tostation,
+          trainid: train._id,
+        })
+      );
+    });
+    setfromstation(localStorage.getItem("fromstation"));
+    settostation(localStorage.getItem("tostation"));
+    dispatch(Searchtrain({ fromstation, tostation }));
+  }, []);
+  const handlemodifysearch = () => {
+    dispatch(Searchtrain({ fromstation, tostation }));
+  };
+  const { coachwiseprice } = useSelector((state) => state.train);
   const Day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
     "January",
@@ -35,9 +68,11 @@ function Result() {
   const month = months[currentDate.getMonth()];
   const year = currentDate.getFullYear();
   const date = currentDate.getDate();
-  const { trainarray } = useSelector((state) => state.train);
-  console.log("this is train array", location?.state?.trainarray);
-
+  const handleavailabilityseat = (data) => {
+    console.log("this is a data for seat availability", data);
+    dispatch(getseatavailability(data));
+  };
+  const { seat } = useSelector((state) => state.train);
   return (
     <div className="h-[100vh] w-full bg-black p-2 flex flex-col overflow-y-auto ">
       <div className="flex gap-4 p-4 w-full shadow-2xl shadow-white mt-3 h-[10vh] items-center">
@@ -49,7 +84,7 @@ function Result() {
             onChange={(e) => {
               setfromstation(e.target.value);
             }}
-            className="text-white bg-black rounded-md border-2 border-white"
+            className="text-white bg-black rounded-md "
           />
           <FaExchangeAlt size={30} color="white" onClick={handleexchange} />
           <input
@@ -59,7 +94,7 @@ function Result() {
             onChange={(e) => {
               settostation(e.target.value);
             }}
-            className="text-white bg-black rounded-md border-2 border-white"
+            className="text-white bg-black rounded-md "
           />
         </div>
         <div className="h-[30px] ">
@@ -109,14 +144,17 @@ function Result() {
         </div>
 
         <div className="">
-          <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+          <button
+            onClick={handlemodifysearch}
+            className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+          >
             Modify Search
           </button>
         </div>
       </div>
       <div className="grid grid-cols-10 ">
-        <div className="col-span-2 border-2 h-[100vh]"></div>
-        <div className="col-span-8 border-2  h-[100vh]">
+        <div className="col-span-2  h-[100vh]"></div>
+        <div className="col-span-8  h-[100vh]">
           <div>
             <div className="h-[10vh] w-full p-2  mt-2 gap-2 flex items-center">
               <div>
@@ -155,6 +193,63 @@ function Result() {
                 </button>
               </div>
             </div>
+          </div>
+          <div className="flex overflow-y-auto flex-col gap-2 p-4">
+            {trainarray?.map((train, index) => (
+              <div
+                key={index}
+                className="h-[45vh] w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-2 p-2"
+              >
+                <div className="flex justify-between">
+                  <p className="text-white text-2xl">
+                    {train?.name}
+                    {`(${train.Train_no})`}
+                  </p>
+                  <p className="text-white ">Runs On : M T W T F S S</p>
+                  <p className="text-cyan-500 font-bold text-xl">
+                    {" "}
+                    Train Schedule
+                  </p>
+                </div>
+                <div className="flex justify-between ">
+                  <p className="text-white text-xl">
+                    21:27 | {fromstation.toUpperCase()} | Sun,31 Mar
+                  </p>
+                  <p className="text-white text-xl">--08:23--</p>
+                  <p className="text-white text-xl">
+                    05:50 | {tostation.toUpperCase()} | Mon,1 Apr
+                  </p>
+                </div>
+                <div className="flex gap-2 ">
+                  {train?.coaches.map((coach, i) => (
+                    <div
+                      key={i}
+                      onClick={() => {
+                        handleavailabilityseat({
+                          trainid: train._id,
+                          fromstation: fromstation,
+                          tostation: tostation,
+                          date: "2024-04-29",
+                          coachTypes: coach.coachType,
+                        });
+                        handleopenindex(i);
+                      }}
+                      className="h-[20vh] w-[18vw] rounded-md  p-1 border-2 border-cyan-500 shadow-2xl shadow-cyan-500"
+                    >
+                      <p className="text-white font-bold ">{coach.coachType}</p>
+                      {seat !== null ? (
+                        <p className="text-green-500 font-bold">
+                          AVAILABLE-{seat[coach.coachType].availableSeat}
+                        </p>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+                <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                  Book Now
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -56,12 +56,15 @@ export const searchtrainbyorigintodestination = catchasynerror(
   async (req, res, next) => {
     try {
       const { fromstation, tostation } = req.body;
+      console.log(
+        "this is from stattion and tostation:" + fromstation + "  " + tostation
+      );
       const train = await Trainmodel.find({
         intermediate_stations: {
           $all: [fromstation, tostation],
         },
       });
-      if (!train) {
+      if (train.length == 0) {
         return next(new Errorhandler("train not found ", 404));
       }
       const resultarray = [];
@@ -92,17 +95,17 @@ export const searchtrainbyorigintodestination = catchasynerror(
 
 export const getcostofticket = catchasynerror(async (req, res, next) => {
   try {
-    const { trainid, fromstation, tostation, coachType } = req.body;
+    const { trainid, fromstation, tostation } = req.body;
     const train = await Trainmodel.findById(trainid);
     if (!train) {
       return next(new Errorhandler("train not found ", 404));
     }
-    const isexistcoachtype = train.coaches.find((coach) => {
-      return coach.coachType === coachType;
-    });
-    if (!isexistcoachtype) {
-      return next(new Errorhandler("Invalid coachtype", 404));
-    }
+    // const isexistcoachtype = train.coaches.find((coach) => {
+    //   return coach.coachType === coachType;
+    // });
+    // if (!isexistcoachtype) {
+    //   return next(new Errorhandler("Invalid coachtype", 404));
+    // }
 
     //finding the indexes of the fromstation and tostation
 
@@ -122,12 +125,21 @@ export const getcostofticket = catchasynerror(async (req, res, next) => {
       const station = train.intermediate_stations[i];
       totalfare += train.price.get(station);
     }
-    if (coachType === "AC") {
-      totalfare *= 1.5;
-    }
+    let pricemap = {};
+
+    train.coaches.forEach((coach) => {
+      if (coach.coachType === "AC") {
+        let coachtype = coach.coachType;
+        pricemap[coachtype] = totalfare * 1.5;
+      } else if (coach.coachType == "Sleeper") {
+        let coachtype = coach.coachType;
+        pricemap[coachtype] = totalfare;
+      }
+    });
+
     res.status(200).json({
       success: true,
-      totalfare,
+      price: pricemap,
     });
   } catch (error) {
     return next(new Errorhandler(error?.message, 500));
@@ -137,21 +149,21 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
   async (req, res, next) => {
     try {
       const { trainid, fromstation, tostation } = req.body;
-
       let { date, coachTypes } = req.body;
-      coachTypes = coachTypes || [];
-      // const date = new Date(Date.now());
+      
+      
+      
       date = date ? new Date(date) : new Date(Date.now());
-      console.log("this is date.now is :", date);
+
       //if we are creating frontend of this website then date is receving by the frontend
 
       const { previousdate, nextdate } = req.query;
       if (nextdate === "true") {
         date.setDate(date.getDate() + 1);
-        console.log("this is a next date ", date);
+      
       } else if (previousdate === "true") {
         date.setDate(date.getDate() - 1);
-        console.log("this is previous date :", date);
+       
       }
       const dateString = date.toISOString().split("T")[0] + "T08:00:00Z";
       console.log("Date:", dateString);
@@ -159,13 +171,10 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
       if (!train) {
         return next(new Errorhandler("Train not found ", 404));
       }
-      const availablecounts = {};
+      let availablecounts = {};
       //now we are using the for of loop
       for (const coach of train.coaches) {
-        const coachType = coach.coachType;
-        if (coachTypes.length > 0 && !coachTypes.includes(coachType)) {
-          continue;
-        }
+        
         const totalseats = coach.coachcategory.reduce(
           (acc, category) => acc + category.seats.length,
           0
@@ -175,26 +184,30 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
           date: dateString,
           from_station: fromstation,
           to_station: tostation,
-          "seats.coachType": coachType,
+          "seats.coachType": coach.coachType,
         });
         const bookedseatscount = bookedseats.length;
         console.log("this is a length of booked seats:", bookedseatscount);
         const availableseatcountsforcoach = totalseats - bookedseatscount;
-        availablecounts[coachType] = {
+        availablecounts[coach.coachType] = {
           totalseats,
           bookedSeats: bookedseatscount,
           availableSeat: availableseatcountsforcoach,
+          coachTypes
         };
       }
       res.status(200).json({
         success: true,
         availablecounts,
+       
       });
     } catch (error) {
       return next(new Errorhandler(error?.message, 500));
     }
   }
 );
+
+
 function getSeatType(seatNumber) {
   // Calculate theseatNumber when dividing seatNumber by 16
 
@@ -279,27 +292,26 @@ export const assignseatsforallcoaches = catchasynerror(
       if (!train) {
         return next(new Errorhandler("train not found ", 404));
       }
-      const arrayofseats=[]
+      const arrayofseats = [];
       train.coaches.forEach((coach) => {
         coach.coachcategory.forEach((category) => {
           category.seats.forEach((seat) => {
             // console.log(getSeatType(seat.seatNumber));
             const seattype = getSeatType(seat.seatNumber);
-            arrayofseats.push(seattype)
+            arrayofseats.push(seattype);
             seat.seatType = seattype;
             // console.log("this is a seat type :",seat.seatType)
           });
         });
       });
-      const savedtrain=await train.save();
+      const savedtrain = await train.save();
       res.status(200).json({
         success: true,
         savedtrain,
-        arrayofseats
+        arrayofseats,
       });
     } catch (error) {
       return next(new Errorhandler(error?.message, 500));
     }
   }
 );
-

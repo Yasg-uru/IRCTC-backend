@@ -4,8 +4,10 @@ import toast from "react-hot-toast";
 
 const initialState = {
   trainarray: [],
-  isLoading: false,
-  error: false,
+  fromstation: localStorage.getItem("fromstation") || "",
+  tostation: localStorage.getItem("tostation") || "",
+  seat: null,
+  coachwiseprice: {},
 };
 export const Searchtrain = createAsyncThunk(
   "train/search",
@@ -18,6 +20,7 @@ export const Searchtrain = createAsyncThunk(
           withCredentials: true,
         }
       );
+      console.log("this is formdata:", formdata);
 
       toast.success("fetched data successfully");
       console.log("this is a response data :", response.data);
@@ -27,21 +30,65 @@ export const Searchtrain = createAsyncThunk(
     }
   }
 );
+
+export const getpricecoachwise = createAsyncThunk(
+  "/train/price",
+  async (formdata) => {
+    console.log("this is a price formdata :", formdata);
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/api/Train/price/ticket`,
+        formdata,
+        {
+          withCredentials: true,
+        }
+      );
+      localStorage.setItem("fromstation", formdata.fromstation);
+      localStorage.setItem("tostation", formdata.tostation);
+      toast.success("searched successfully");
+      return response.data;
+    } catch (error) {
+      toast.error("failed to fetch price");
+    }
+  }
+);
+export const getseatavailability = createAsyncThunk(
+  "/train/availability",
+  async (formdata) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:4000/api/Train/getavailability`,
+        formdata,
+
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(
+        "this is a formdata inside the getseatavailability :",
+        formdata
+      );
+      toast.success("fetched availabilty of seats ");
+      return res.data;
+    } catch (error) {
+      toast.error(error?.message || "failed to fetch availability of seats ");
+    }
+  }
+);
 const trainSlice = createSlice({
   name: "train",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(Searchtrain.fulfilled, (state, action) => {
-      state.trainarray = action.payload.resultarray;
-      state.isLoading = false;
+      localStorage.setItem("trainarray", action?.payload?.resultarray);
+      state.trainarray = action?.payload?.resultarray;
     });
-    builder.addCase(Searchtrain.pending, (state, action) => {
-      state.isLoading = true;
+    builder.addCase(getpricecoachwise.fulfilled, (state, action) => {
+      state.coachwiseprice = action?.payload?.price;
     });
-    builder.addCase(Searchtrain.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = true;
+    builder.addCase(getseatavailability.fulfilled, (state, action) => {
+      state.seat = action?.payload?.availablecounts;
     });
   },
 });
