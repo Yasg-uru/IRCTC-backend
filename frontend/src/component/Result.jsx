@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { LuRefreshCcw } from "react-icons/lu";
 import toast from "react-hot-toast";
@@ -9,10 +9,12 @@ import {
   Searchtrain,
   getpricecoachwise,
   getseatavailability,
+  getseatavailabilityprev,
 } from "../reducx-toolkit/TrainSlice";
 import { searchtrainbyorigintodestination } from "../../../backend/controller/Train.controller";
 function Result() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [fromstation, setfromstation] = useState(location?.state?.fromstation);
   const [tostation, settostation] = useState(location?.state?.tostation);
@@ -73,6 +75,7 @@ function Result() {
     dispatch(getseatavailability(data));
   };
   const { seat } = useSelector((state) => state.train);
+
   return (
     <div className="h-[100vh] w-full bg-black p-2 flex flex-col overflow-y-auto ">
       <div className="flex gap-4 p-4 w-full shadow-2xl shadow-white mt-3 h-[10vh] items-center">
@@ -221,29 +224,21 @@ function Result() {
                   </p>
                 </div>
                 <div className="flex gap-2 ">
-                  {train?.coaches.map((coach, i) => (
-                    <div
-                      key={i}
-                      onClick={() => {
-                        handleavailabilityseat({
+                  <button
+                    onClick={() => {
+                      navigate("/seatavailabilty", {
+                        state: {
                           trainid: train._id,
                           fromstation: fromstation,
                           tostation: tostation,
-                          date: "2024-04-29",
-                          coachTypes: coach.coachType,
-                        });
-                        handleopenindex(i);
-                      }}
-                      className="h-[20vh] w-[18vw] rounded-md  p-1 border-2 border-cyan-500 shadow-2xl shadow-cyan-500"
-                    >
-                      <p className="text-white font-bold ">{coach.coachType}</p>
-                      {seat !== null ? (
-                        <p className="text-green-500 font-bold">
-                          AVAILABLE-{seat[coach.coachType].availableSeat}
-                        </p>
-                      ) : null}
-                    </div>
-                  ))}
+                          date: currentDate,
+                        },
+                      });
+                    }}
+                    className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+                  >
+                    Check seat Availabilty
+                  </button>
                 </div>
                 <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
                   Book Now

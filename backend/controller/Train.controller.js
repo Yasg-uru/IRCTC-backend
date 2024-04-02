@@ -150,9 +150,7 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
     try {
       const { trainid, fromstation, tostation } = req.body;
       let { date, coachTypes } = req.body;
-      
-      
-      
+
       date = date ? new Date(date) : new Date(Date.now());
 
       //if we are creating frontend of this website then date is receving by the frontend
@@ -160,10 +158,8 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
       const { previousdate, nextdate } = req.query;
       if (nextdate === "true") {
         date.setDate(date.getDate() + 1);
-      
       } else if (previousdate === "true") {
         date.setDate(date.getDate() - 1);
-       
       }
       const dateString = date.toISOString().split("T")[0] + "T08:00:00Z";
       console.log("Date:", dateString);
@@ -171,10 +167,9 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
       if (!train) {
         return next(new Errorhandler("Train not found ", 404));
       }
-      let availablecounts = {};
+      const arrayofseats = [];
       //now we are using the for of loop
       for (const coach of train.coaches) {
-        
         const totalseats = coach.coachcategory.reduce(
           (acc, category) => acc + category.seats.length,
           0
@@ -189,17 +184,18 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
         const bookedseatscount = bookedseats.length;
         console.log("this is a length of booked seats:", bookedseatscount);
         const availableseatcountsforcoach = totalseats - bookedseatscount;
-        availablecounts[coach.coachType] = {
+        const coachtypename = coach.coachType;
+
+        arrayofseats.push({
           totalseats,
           bookedSeats: bookedseatscount,
           availableSeat: availableseatcountsforcoach,
-          coachTypes
-        };
+          coachtypename,
+        });
       }
       res.status(200).json({
         success: true,
-        availablecounts,
-       
+        arrayofseats,
       });
     } catch (error) {
       return next(new Errorhandler(error?.message, 500));
@@ -207,6 +203,13 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
   }
 );
 
+export const getseatavailabilityofallthetrains = catchasynerror(
+  async (req, res, next) => {
+    try {
+      const { fromstation, tostation } = req.body;
+    } catch (error) {}
+  }
+);
 
 function getSeatType(seatNumber) {
   // Calculate theseatNumber when dividing seatNumber by 16
@@ -287,28 +290,43 @@ function getSeatType(seatNumber) {
 export const assignseatsforallcoaches = catchasynerror(
   async (req, res, next) => {
     try {
-      const { trainid } = req.body;
+      const { trainid, date, from_station, to_station } = req.body;
       const train = await Trainmodel.findById(trainid);
       if (!train) {
         return next(new Errorhandler("train not found ", 404));
       }
-      const arrayofseats = [];
+      const bookings = await bookingmodel.find({
+        trainid,
+        date,
+        from_station,
+        to_station,
+      });
+      const array = [];
       train.coaches.forEach((coach) => {
         coach.coachcategory.forEach((category) => {
+          const arrayofseats = [];
           category.seats.forEach((seat) => {
             // console.log(getSeatType(seat.seatNumber));
             const seattype = getSeatType(seat.seatNumber);
-            arrayofseats.push(seattype);
+            const isBooked = bookings.some((booking) => {
+              
+              return (booking.seats.coachType === coach.coachType &&
+                booking.seats.categoryName === category.name &&
+                booking.seats.seatNumber === seat.seatNumber);
+            });
+            arrayofseats.push({ SeatType: seattype, isBooked: isBooked });
             seat.seatType = seattype;
-            // console.log("this is a seat type :",seat.seatType)
+            console.log("this is a seat type :", seat.seatType);
           });
+          const coachTypes = coach.coachType;
+          array.push({ coachTypes, arrayofseats });
         });
       });
       const savedtrain = await train.save();
       res.status(200).json({
         success: true,
         savedtrain,
-        arrayofseats,
+        array,
       });
     } catch (error) {
       return next(new Errorhandler(error?.message, 500));
