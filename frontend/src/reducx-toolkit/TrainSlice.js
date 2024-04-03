@@ -8,6 +8,7 @@ const initialState = {
   tostation: localStorage.getItem("tostation") || "",
   seat: [],
   coachwiseprice: {},
+  seatcharts: [],
 };
 export const Searchtrain = createAsyncThunk(
   "train/search",
@@ -55,11 +56,21 @@ export const getpricecoachwise = createAsyncThunk(
 export const getseatavailability = createAsyncThunk(
   "/train/availability",
   async (formdata) => {
-    console.log("this is a formdata of seatavailability :",formdata)
+    console.log("this is a formdata of seatavailability :", formdata);
+    let maindata;
+    if (formdata.data) {
+      maindata = formdata.data;
+      while(maindata.data){
+        maindata=maindata.data
+      }
+    } else {
+      maindata = formdata;
+    }
+
     try {
       const res = await axios.post(
         `http://localhost:4000/api/Train/getavailability`,
-        formdata,
+        maindata,
 
         {
           withCredentials: true,
@@ -122,6 +133,34 @@ export const getseatavailabilitynext = createAsyncThunk(
     }
   }
 );
+export const getseatscharts = createAsyncThunk(
+  "/train/seatcharts",
+  async (formdata) => {
+    console.log("this is formdata: inside the get seatcharts :", formdata);
+    let maindata=formdata;
+    if(formdata.data){
+      maindata=formdata.date;
+      while(maindata.data){
+        maindata=maindata.data
+      }
+    }else{
+      maindata=formdata
+    }
+    try {
+      const res = await axios.post(
+        `http://localhost:4000/api/Train/assignseat`,
+        formdata,
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("fetched seatcharts successfully");
+      return res.data;
+    } catch (error) {
+      toast.error(error?.message || "failed to fecth seat charts ");
+    }
+  }
+);
 const trainSlice = createSlice({
   name: "train",
   initialState,
@@ -136,13 +175,16 @@ const trainSlice = createSlice({
     });
     builder.addCase(getseatavailability.fulfilled, (state, action) => {
       state.seat = action?.payload?.arrayofseats;
-    })
-    builder.addCase(getseatavailabilityprev.fulfilled,(state,action)=>{
-      state.trainarray=action?.payload?.availablecounts
-    })
-    builder.addCase(getseatavailabilitynext.fulfilled,(state,action)=>{
-      state.seat=action?.payload?.availablecounts
-    })
+    });
+    builder.addCase(getseatavailabilityprev.fulfilled, (state, action) => {
+      state.trainarray = action?.payload?.availablecounts;
+    });
+    builder.addCase(getseatavailabilitynext.fulfilled, (state, action) => {
+      state.seat = action?.payload?.availablecounts;
+    });
+    builder.addCase(getseatscharts.fulfilled, (state, action) => {
+      state.seatcharts = action?.payload?.array;
+    });
   },
 });
 export default trainSlice.reducer;

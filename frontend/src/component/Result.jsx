@@ -162,7 +162,7 @@ function Result() {
             <div className="h-[10vh] w-full p-2  mt-2 gap-2 flex items-center">
               <div>
                 <p className="text-white text-2xl ">
-                  {trainarray.length} Result for{" "}
+                  {trainarray?.length} Result for{" "}
                   <span className="font-bold">{fromstation} </span>
                 </p>
               </div>
@@ -237,12 +237,9 @@ function Result() {
                     }}
                     className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
                   >
-                    Check seat Availabilty
+                    Check seat Availabilty and Book Ticket
                   </button>
                 </div>
-                <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
-                  Book Now
-                </button>
               </div>
             ))}
           </div>

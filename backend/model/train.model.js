@@ -1,4 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
+
 const TrainSchema = new Schema({
   name: {
     type: String,
@@ -40,6 +41,19 @@ const TrainSchema = new Schema({
     type: Map,
     of: Number,
   },
+  schedule: [
+    {
+      serialNo: Number,
+      stationCode: String,
+      stationName: String,
+      routeNumber: Number,
+      arrivalTime: String,
+      departureTime: String,
+      haltTime: String,
+      distance: Number,
+      day: Number,
+    },
+  ],
 });
 
 const Trainmodel = model("Train", TrainSchema);

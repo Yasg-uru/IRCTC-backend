@@ -1,15 +1,15 @@
 import { CgArrowsExchangeAltV } from "react-icons/cg";
 import { useEffect, useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Searchtrain } from "../reducx-toolkit/TrainSlice";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 function Homepage() {
   const dispatch = useDispatch();
   const [fromstation, setfromstation] = useState("");
   const [tostation, settostation] = useState("");
   const [selectdate, setselectdate] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   // const {isLoading,error}=useSelector((state)=>state.train)
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function Homepage() {
     setfromstation(tostation);
     settostation(tempstation);
   };
-  const submitform = async(event) => {
+  const submitform = async (event) => {
     event.preventDefault();
     await dispatch(
       Searchtrain({
@@ -33,11 +33,10 @@ function Homepage() {
         tostation,
       })
     );
-    
 
-      navigate("/result",{state:{fromstation:fromstation,tostation:tostation}})
-    
-    
+    navigate("/result", {
+      state: { fromstation: fromstation, tostation: tostation },
+    });
   };
   return (
     <div className="h-[100vh] w-full bg-black flex justify-center items-center">

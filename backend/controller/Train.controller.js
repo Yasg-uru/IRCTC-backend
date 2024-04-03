@@ -14,6 +14,7 @@ export const create_Train = catchasynerror(async (req, res, next) => {
       coaches,
       price,
       date,
+      schedule,
     } = req.body;
 
     let seatNumber = 1;
@@ -41,6 +42,7 @@ export const create_Train = catchasynerror(async (req, res, next) => {
       intermediate_stations,
       coaches,
       price,
+      schedule,
     });
     res.status(200).json({
       success: true,
@@ -150,6 +152,8 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
     try {
       const { trainid, fromstation, tostation } = req.body;
       let { date, coachTypes } = req.body;
+
+      console.log("thi is a infomation insidethe req.body:", req.body);
 
       date = date ? new Date(date) : new Date(Date.now());
 
@@ -290,16 +294,27 @@ function getSeatType(seatNumber) {
 export const assignseatsforallcoaches = catchasynerror(
   async (req, res, next) => {
     try {
-      const { trainid, date, from_station, to_station } = req.body;
+      const { trainid, date, fromstation, tostation } = req.body;
+      console.log(
+        "this is a trainid and others ",
+        trainid,
+        date,
+        fromstation,
+        tostation
+      );
+      const [year, month, day] = date.split("T")[0].split("-");
+
+      // Format the date
+      const formattedDate = `${year}-${month}-${day}`;
       const train = await Trainmodel.findById(trainid);
       if (!train) {
         return next(new Errorhandler("train not found ", 404));
       }
       const bookings = await bookingmodel.find({
         trainid,
-        date,
-        from_station,
-        to_station,
+        date: formattedDate,
+        from_station: fromstation,
+        to_station: tostation,
       });
       const array = [];
       train.coaches.forEach((coach) => {
@@ -309,17 +324,19 @@ export const assignseatsforallcoaches = catchasynerror(
             // console.log(getSeatType(seat.seatNumber));
             const seattype = getSeatType(seat.seatNumber);
             const isBooked = bookings.some((booking) => {
-              
-              return (booking.seats.coachType === coach.coachType &&
+              return (
+                booking.seats.coachType === coach.coachType &&
                 booking.seats.categoryName === category.name &&
-                booking.seats.seatNumber === seat.seatNumber);
+                booking.seats.seatNumber === seat.seatNumber
+              );
             });
             arrayofseats.push({ SeatType: seattype, isBooked: isBooked });
             seat.seatType = seattype;
-            console.log("this is a seat type :", seat.seatType);
+            // console.log("this is a seat type :", seat.seatType);
           });
+          const categoryname = category.name;
           const coachTypes = coach.coachType;
-          array.push({ coachTypes, arrayofseats });
+          array.push({ categoryname, coachTypes, arrayofseats });
         });
       });
       const savedtrain = await train.save();
@@ -333,3 +350,4 @@ export const assignseatsforallcoaches = catchasynerror(
     }
   }
 );
+
