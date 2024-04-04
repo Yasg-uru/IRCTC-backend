@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { getseatscharts } from "../reducx-toolkit/TrainSlice";
+import { Searchtrain, getseatscharts } from "../reducx-toolkit/TrainSlice";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
 function Seatavailabilty() {
   const location = useLocation();
@@ -11,6 +11,7 @@ function Seatavailabilty() {
 // const [locationData,setLocationData]=useState()
   useEffect(() => {
     dispatch(getseatscharts(location?.state?.data));
+
   }, [dispatch,location.state.data]);
 
   const { seatcharts } = useSelector((state) => state.train);

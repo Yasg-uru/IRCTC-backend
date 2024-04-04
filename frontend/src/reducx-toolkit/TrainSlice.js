@@ -21,6 +21,7 @@ export const Searchtrain = createAsyncThunk(
           withCredentials: true,
         }
       );
+
       console.log("this is formdata:", formdata);
 
       toast.success("fetched data successfully");
@@ -60,8 +61,8 @@ export const getseatavailability = createAsyncThunk(
     let maindata;
     if (formdata.data) {
       maindata = formdata.data;
-      while(maindata.data){
-        maindata=maindata.data
+      while (maindata.data) {
+        maindata = maindata.data;
       }
     } else {
       maindata = formdata;
@@ -137,14 +138,14 @@ export const getseatscharts = createAsyncThunk(
   "/train/seatcharts",
   async (formdata) => {
     console.log("this is formdata: inside the get seatcharts :", formdata);
-    let maindata=formdata;
-    if(formdata.data){
-      maindata=formdata.date;
-      while(maindata.data){
-        maindata=maindata.data
+    let maindata = formdata;
+    if (formdata.data) {
+      maindata = formdata.date;
+      while (maindata.data) {
+        maindata = maindata.data;
       }
-    }else{
-      maindata=formdata
+    } else {
+      maindata = formdata;
     }
     try {
       const res = await axios.post(

@@ -54,6 +54,10 @@ const TrainSchema = new Schema({
       day: Number,
     },
   ],
+  runningDays: {
+    type: [Number],
+    required: [true, "Please specify the running days of the train"],
+  },
 });
 
 const Trainmodel = model("Train", TrainSchema);

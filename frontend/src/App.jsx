@@ -5,6 +5,8 @@ import {Routes,Route} from "react-router-dom"
 import Result from './component/Result.jsx'
 import Getseatavialbilityseats from "./component/Getseatavialbilityseats.jsx"
 import Seatavailabality from "./component/Seatavailabality.jsx"
+import Loader from './component/Loader.jsx'
+
 function App() {
  
 
@@ -16,6 +18,8 @@ function App() {
       <Route path='/seatavailabilty/' element={<Getseatavialbilityseats/>}>
         <Route path='seat' element={<Seatavailabality/>}/>
       </Route>
+      
+      
      </Routes>
     </>
   )

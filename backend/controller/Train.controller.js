@@ -15,6 +15,7 @@ export const create_Train = catchasynerror(async (req, res, next) => {
       price,
       date,
       schedule,
+      runningDays
     } = req.body;
 
     let seatNumber = 1;
@@ -43,6 +44,7 @@ export const create_Train = catchasynerror(async (req, res, next) => {
       coaches,
       price,
       schedule,
+      runningDays
     });
     res.status(200).json({
       success: true,
@@ -57,10 +59,13 @@ export const create_Train = catchasynerror(async (req, res, next) => {
 export const searchtrainbyorigintodestination = catchasynerror(
   async (req, res, next) => {
     try {
-      const { fromstation, tostation } = req.body;
+      const { fromstation, tostation,date  } = req.body;
       console.log(
         "this is from stattion and tostation:" + fromstation + "  " + tostation
       );
+      const selectedday=new Date(date);
+      const selectedDay=selectedday.getDay();
+
       const train = await Trainmodel.find({
         intermediate_stations: {
           $all: [fromstation, tostation],
@@ -71,6 +76,9 @@ export const searchtrainbyorigintodestination = catchasynerror(
       }
       const resultarray = [];
       for (const Train of train) {
+        if(!Train?.runningDays.includes(selectedDay)){
+          continue;
+        }
         const fromstation_index = Train.intermediate_stations.findIndex(
           (station) => station === fromstation
         );
