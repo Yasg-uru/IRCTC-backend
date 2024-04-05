@@ -61,7 +61,7 @@ export const searchtrainbyorigintodestination = catchasynerror(
     try {
       const { fromstation, tostation,date  } = req.body;
       console.log(
-        "this is from stattion and tostation:" + fromstation + "  " + tostation
+        "this is from stattion and tostation:" + fromstation + "  " + tostation +"     "+date 
       );
       const selectedday=new Date(date);
       const selectedDay=selectedday.getDay();

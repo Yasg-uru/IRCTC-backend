@@ -16,9 +16,6 @@ function Homepage() {
     const currentdate = new Date().toISOString().split("T")[0];
     setselectdate(currentdate);
   }, []);
-  // useEffect(()=>{
-
-  // },[isLoading,error,navigate])
 
   const HandleReverse = () => {
     const tempstation = fromstation;
@@ -31,11 +28,12 @@ function Homepage() {
       Searchtrain({
         fromstation,
         tostation,
+        date: selectdate,
       })
     );
 
     navigate("/result", {
-      state: { fromstation: fromstation, tostation: tostation },
+      state: { fromstation: fromstation, tostation: tostation,date:selectdate },
     });
   };
   return (

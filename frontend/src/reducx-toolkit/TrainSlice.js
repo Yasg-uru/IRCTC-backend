@@ -14,6 +14,9 @@ export const Searchtrain = createAsyncThunk(
   "train/search",
   async (formdata) => {
     try {
+      localStorage.setItem("fromstation", formdata.fromstation);
+      localStorage.setItem("tostation", formdata.tostation);
+      localStorage.setItem("date",formdata.date)
       const response = await axios.post(
         `http://localhost:4000/api/Train/search`,
         formdata,
