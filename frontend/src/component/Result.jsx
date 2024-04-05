@@ -137,7 +137,7 @@ function Result() {
   const getformatedDate = () => {
     const currentDate = new Date(dateselect);
 
-    let day = currentDate.getDate();
+    let day = currentDate.getDay();
     let year = currentDate.getFullYear();
     let date = currentDate.getDate();
     let month = currentDate.getMonth();
