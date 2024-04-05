@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -44,7 +43,7 @@ function Result() {
 
   let { trainarray } = useSelector((state) => state.train);
   const dispatch = useDispatch();
-  
+
   const handleprevsearch = () => {
     const currentDate = new Date(dateselect);
     currentDate.setDate(currentDate.getDate() - 1);
@@ -135,7 +134,16 @@ function Result() {
     }
     return "--";
   };
+  const getformatedDate = () => {
+    const currentDate = new Date(dateselect);
 
+    let day = currentDate.getDate();
+    let year = currentDate.getFullYear();
+    let date = currentDate.getDate();
+    let month = currentDate.getMonth();
+
+    return `${Day[day]}, ${date} ${months[month]} ${year}`;
+  };
   return (
     <>
       {loading ? (
@@ -237,9 +245,7 @@ function Result() {
                     <p className="text-white text-2xl font-bold">{tostation}</p>
                   </div>
                   <div>
-                    <p className="text-white">
-                      | {day},{date} {month} {year}
-                    </p>
+                    <p className="text-white">| {getformatedDate()}</p>
                   </div>
                 </div>
                 <div className="h-[10vh] w-full  p-2 flex justify-between">
@@ -252,10 +258,16 @@ function Result() {
                     </button>
                   </div>
                   <div className="flex gap-2 justify-around">
-                    <button onClick={handleprevsearch} className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                    <button
+                      onClick={handleprevsearch}
+                      className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+                    >
                       Previous Day
                     </button>
-                    <button onClick={handlenextsearch} className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                    <button
+                      onClick={handlenextsearch}
+                      className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+                    >
                       Next Day
                     </button>
                   </div>
