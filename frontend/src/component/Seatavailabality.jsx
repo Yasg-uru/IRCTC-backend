@@ -5,13 +5,11 @@ import { Searchtrain, getseatscharts } from "../reducx-toolkit/TrainSlice";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
 function Seatavailabilty() {
   const [selectseat, setselectseat] = useState(null);
-  //by using this state of the seatselect that can able to book that ticket
 
   const location = useLocation();
-  console.log("this is seat chart states in last component:", location.state);
+
   const dispatch = useDispatch();
 
-  // const [locationData,setLocationData]=useState()
   useEffect(() => {
     dispatch(getseatscharts(location?.state?.data));
   }, [dispatch, location.state.data]);
@@ -20,17 +18,14 @@ function Seatavailabilty() {
   const coachType = location?.state?.coachType;
 
   const categoryNames = [];
-  seatcharts?.forEach((seatchart) => {
+  seatcharts.forEach((seatchart) => {
     if (seatchart.coachTypes === coachType) {
       categoryNames.push(seatchart.categoryname);
     }
   });
-  console.log("this  is a array of seats :", seatcharts);
+
   const [coach, setcoach] = useState("");
-  console.log("this is a seat availability of seatchart last element :");
-  function handleseatclick(seatnumber) {
-    setselectseat();
-  }
+
   return (
     <div className="text-white text-2xl h-[100vh] w-full flex flex-col overflow-y-auto">
       <div className="h-[10vh] w-full flex gap-2">
@@ -55,7 +50,6 @@ function Seatavailabilty() {
                 <div
                   key={s.SeatType.seatNumber}
                   className="flex flex-col items-center"
-                  onClick={handleseatclick(s, coach)}
                 >
                   {s.isBooked === false ? (
                     <MdAirlineSeatReclineExtra size={50} color="green" />

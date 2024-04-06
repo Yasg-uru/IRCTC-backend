@@ -24,7 +24,7 @@ function getseatavailabilityseats() {
     dispatch(getseatavailability(location?.state));
     dispatch(Searchtrain({ fromstation, tostation }));
   }, []);
-  const [selectcoach,setselectcoach]=useState(null)
+  const [selectcoach, setselectcoach] = useState(null);
   const { trainarray } = useSelector((state) => state?.train);
   const { seat } = useSelector((state) => state?.train);
   const navigate = useNavigate();
@@ -37,11 +37,7 @@ function getseatavailabilityseats() {
       dispatch(getseatavailability(location?.state));
     }
   };
-  // const traininfo = trainarray?.find(
-  //   (train) => train?._id === location?.state?.trainid
-  // );
-
-  // console.log("this is a train array with filtered things ", traininfo);
+  
   return (
     <div className="h-[100vh] w-full bg-black flex flex-col gap-2">
       <div className="flex gap-2 items-center cursor-pointer">
@@ -53,24 +49,17 @@ function getseatavailabilityseats() {
           Back
         </p>
       </div>
-      {/* <div className="flex h-[15vh] w-full gap-2">
-        <p className="text-white text-center font-bold text-2xl">
-          {traininfo?.name} ({traininfo?.Train_no})
-        </p>
-        <p className="text-3xl text-center font-bold flex items-center gap-3 text-white">
-          {location?.state?.fromstation}{" "}
-          <FaArrowRightLong color="white" size={25} />{" "}
-          {location?.state?.tostation}
-        </p>
-      </div> */}
+
       <h1 className="text-white text-center text-2xl"></h1>
       <div className="flex items-center h-[50vh] p-3 rounded-lg w-full border-2 border-white gap-2">
         {seat &&
           seat.map((s) => (
             <div
               key={s.coachtypename}
-              onClick={()=>{
-                setselectcoach(s.coachtypename)
+              onClick={() => {
+                navigate("seat", {
+                  state: { data: location?.state, coachType: s.coachtypename },
+                });
               }}
               className="h-[20vh] p-4 w-[30vw] flex flex-col gap-1 rounded-lg shadow-cyan-600 shadow-2xl border-[0.5px] border-white"
             >
@@ -105,8 +94,9 @@ function getseatavailabilityseats() {
           search by date
         </button>
       </div>
-      
+      <Outlet/>
     </div>
+    
   );
 }
 export default getseatavailabilityseats;
