@@ -24,7 +24,7 @@ function getseatavailabilityseats() {
     dispatch(getseatavailability(location?.state));
     dispatch(Searchtrain({ fromstation, tostation }));
   }, []);
-  const [selectcoach, setselectcoach] = useState(null);
+
   const { trainarray } = useSelector((state) => state?.train);
   const { seat } = useSelector((state) => state?.train);
   const navigate = useNavigate();
@@ -37,7 +37,14 @@ function getseatavailabilityseats() {
       dispatch(getseatavailability(location?.state));
     }
   };
-  
+
+  //now writing the logic for rendering the seatavailabilty logic
+  const [selectcoachRender, setselectcoachRender] = useState(null);
+  //this state is helping in the rendering the seats of the coach
+  console.log(
+    "this is a component that is select coach render ",
+    selectcoachRender
+  );
   return (
     <div className="h-[100vh] w-full bg-black flex flex-col gap-2">
       <div className="flex gap-2 items-center cursor-pointer">
@@ -57,9 +64,7 @@ function getseatavailabilityseats() {
             <div
               key={s.coachtypename}
               onClick={() => {
-                navigate("seat", {
-                  state: { data: location?.state, coachType: s.coachtypename },
-                });
+                setselectcoachRender(s.coachtypename);
               }}
               className="h-[20vh] p-4 w-[30vw] flex flex-col gap-1 rounded-lg shadow-cyan-600 shadow-2xl border-[0.5px] border-white"
             >
@@ -94,9 +99,14 @@ function getseatavailabilityseats() {
           search by date
         </button>
       </div>
-      <Outlet/>
+      {/* logic for rendering the seatcharts component  */}
+      {selectcoachRender && (
+        <Seatavailabilty
+          coachtype={selectcoachRender}
+          locationdata={location?.state}
+        />
+      )}
     </div>
-    
   );
 }
 export default getseatavailabilityseats;

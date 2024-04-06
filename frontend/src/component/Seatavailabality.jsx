@@ -3,19 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Searchtrain, getseatscharts } from "../reducx-toolkit/TrainSlice";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
-function Seatavailabilty() {
+function Seatavailabilty({coachtype,locationdata}) {
   const [selectseat, setselectseat] = useState(null);
+console.log("this is a coachtype :",coachtype);
+console.log("this is a locationdata :",locationdata);
 
-  const location = useLocation();
+  // const location = useLocation();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getseatscharts(location?.state?.data));
-  }, [dispatch, location.state.data]);
+    dispatch(getseatscharts(locationdata));
+  }, [dispatch, locationdata]);
 
   const { seatcharts } = useSelector((state) => state.train);
-  const coachType = location?.state?.coachType;
+  const coachType = coachtype;
 
   const categoryNames = [];
   seatcharts.forEach((seatchart) => {
