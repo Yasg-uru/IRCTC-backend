@@ -58,6 +58,12 @@ function Result() {
     setselectdate(nextDay);
     dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
   };
+  const handlemodifysearch = () => {
+    localStorage.setItem("fromstation", fromstation);
+    localStorage.setItem("tostation", tostation);
+
+    dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
+  };
   useEffect(() => {
     trainarray?.forEach(async (train) => {
       await dispatch(
@@ -84,9 +90,6 @@ function Result() {
     localStorage.getItem("fromstation")
   );
   console.log("this is a localstorage date", localStorage.getItem("date"));
-  const handlemodifysearch = () => {
-    dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
-  };
 
   const { coachwiseprice } = useSelector((state) => state.train);
   const Day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -134,6 +137,46 @@ function Result() {
     }
     return "--";
   };
+  function fromstationinfo(train) {
+    const fromStation = localStorage.getItem("fromstation");
+
+    if (!train || !train.schedule) {
+      return null;
+    }
+    const departuretime = train.schedule.find((s) => {
+      return s.stationName === fromstation;
+    });
+    let departuredatetime = new Date(
+      dateselect + "T" + departuretime?.departureTime
+    );
+    departuredatetime = departuredatetime.toDateString();
+    return train.schedule
+      .filter((s) => s.stationName === fromStation)
+      .map((s) => (
+        <p key={s.id} className="text-white">
+          {s.departureTime} | {s.stationName} | {departuredatetime}
+        </p>
+      ));
+  }
+  function tostationinfo(train) {
+    if (!train || !train.schedule) {
+      return null;
+    }
+    //now we need to find the tostation date according to their arrival time
+    let arrivaltime = train?.schedule.find((s) => {
+      return s.stationName === tostation;
+    });
+    let arrivaltimedate = new Date(dateselect + "T" + arrivaltime.arrivalTime);
+    arrivaltimedate = arrivaltimedate.toDateString();
+    return train.schedule
+      .filter((s) => s.stationName === localStorage.getItem("tostation"))
+      .map((s) => (
+        <p className="text-white">
+          {s.arrivalTime} | {s.stationName} | {arrivaltimedate}
+        </p>
+      ));
+  }
+
   const getformatedDate = () => {
     const currentDate = new Date(dateselect);
 
@@ -144,6 +187,7 @@ function Result() {
 
     return `${Day[day]}, ${date} ${months[month]} ${year}`;
   };
+
   return (
     <>
       {loading ? (
@@ -235,14 +279,18 @@ function Result() {
                   <div>
                     <p className="text-white text-2xl ">
                       {trainarray?.length} Result for{" "}
-                      <span className="font-bold">{fromstation} </span>
+                      <span className="font-bold">
+                        {localStorage.getItem("fromstation")}{" "}
+                      </span>
                     </p>
                   </div>
                   <div>
                     <FaLongArrowAltRight color="white" size={30} />
                   </div>
                   <div>
-                    <p className="text-white text-2xl font-bold">{tostation}</p>
+                    <p className="text-white text-2xl font-bold">
+                      {localStorage.getItem("tostation")}
+                    </p>
                   </div>
                   <div>
                     <p className="text-white">| {getformatedDate()}</p>
@@ -300,36 +348,14 @@ function Result() {
                     </div>
                     <div className="flex justify-between ">
                       <div className="text-white text-xl">
-                        {train?.schedule
-                          .filter(
-                            (s) =>
-                              s.stationName ===
-                              localStorage.getItem("fromstation")
-                          )
-                          .map((s) => (
-                            <p className="text-white">
-                              {s.departureTime} | {s.stationName} | {day} {date}{" "}
-                              {month}{" "}
-                            </p>
-                          ))}
+                        {fromstationinfo(train)}
                       </div>
                       <p className="text-white text-xl">
                         {" "}
                         __________ {calculateDuration(train)} __________{" "}
                       </p>
                       <div className="text-white text-xl">
-                        {train?.schedule
-                          .filter(
-                            (s) =>
-                              s.stationName ===
-                              localStorage.getItem("tostation")
-                          )
-                          .map((s) => (
-                            <p className="text-white">
-                              {s.arrivalTime} | {s.stationName} | {day} {date}{" "}
-                              {month}{" "}
-                            </p>
-                          ))}
+                        {tostationinfo(train)}
                       </div>
                     </div>
                     <div className="flex gap-2 ">

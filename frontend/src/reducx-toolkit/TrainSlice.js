@@ -48,8 +48,8 @@ export const getpricecoachwise = createAsyncThunk(
           withCredentials: true,
         }
       );
-      localStorage.setItem("fromstation", formdata.fromstation);
-      localStorage.setItem("tostation", formdata.tostation);
+      // localStorage.setItem("fromstation", formdata.fromstation);
+      // localStorage.setItem("tostation", formdata.tostation);
       toast.success("searched successfully");
       return response.data;
     } catch (error) {
