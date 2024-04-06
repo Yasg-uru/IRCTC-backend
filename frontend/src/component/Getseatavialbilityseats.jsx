@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { GrLinkPrevious } from "react-icons/gr";
 import { FaArrowRightLong } from "react-icons/fa6";
+import Seatavailabilty from "./Seatavailabality.jsx";
 import {
   Searchtrain,
   getseatavailability,
@@ -23,6 +24,7 @@ function getseatavailabilityseats() {
     dispatch(getseatavailability(location?.state));
     dispatch(Searchtrain({ fromstation, tostation }));
   }, []);
+  const [selectcoach,setselectcoach]=useState(null)
   const { trainarray } = useSelector((state) => state?.train);
   const { seat } = useSelector((state) => state?.train);
   const navigate = useNavigate();
@@ -67,10 +69,8 @@ function getseatavailabilityseats() {
           seat.map((s) => (
             <div
               key={s.coachtypename}
-              onClick={() => {
-                navigate("seat", {
-                  state: { data: location?.state, coachType: s.coachtypename },
-                });
+              onClick={()=>{
+                setselectcoach(s.coachtypename)
               }}
               className="h-[20vh] p-4 w-[30vw] flex flex-col gap-1 rounded-lg shadow-cyan-600 shadow-2xl border-[0.5px] border-white"
             >
@@ -105,7 +105,7 @@ function getseatavailabilityseats() {
           search by date
         </button>
       </div>
-      <Outlet />
+      
     </div>
   );
 }

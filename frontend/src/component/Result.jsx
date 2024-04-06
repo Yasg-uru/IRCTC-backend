@@ -59,9 +59,6 @@ function Result() {
     dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
   };
   const handlemodifysearch = () => {
-    localStorage.setItem("fromstation", fromstation);
-    localStorage.setItem("tostation", tostation);
-
     dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
   };
   useEffect(() => {
@@ -107,11 +104,11 @@ function Result() {
     "November",
     "December",
   ];
-  let currentDate = new Date();
-  const day = Day[currentDate.getDay()];
-  const month = months[currentDate.getMonth()];
-  const year = currentDate.getFullYear();
-  const date = currentDate.getDate();
+  // let currentDate = new Date();
+  // const day = Day[currentDate.getDay()];
+  // const month = months[currentDate.getMonth()];
+  // const year = currentDate.getFullYear();
+  // const date = currentDate.getDate();
 
   const handleavailabilityseat = (data) => {
     console.log("this is a data for seat availability", data);
@@ -166,12 +163,23 @@ function Result() {
     let arrivaltime = train?.schedule.find((s) => {
       return s.stationName === tostation;
     });
-    let arrivaltimedate = new Date(dateselect + "T" + arrivaltime.arrivalTime);
+    let departuretime = train?.schedule.find((s) => {
+      return s.stationName === fromstation;
+    });
+    let departuretimedate = new Date(
+      dateselect + "T" + departuretime?.departureTime
+    );
+
+    let arrivaltimedate = new Date(dateselect + "T" + arrivaltime?.arrivalTime);
+    console.log("this is a arrival date :", arrivaltimedate);
+    if (arrivaltimedate < departuretimedate) {
+      arrivaltimedate.setDate(arrivaltimedate.getDate() + 1);
+    }
     arrivaltimedate = arrivaltimedate.toDateString();
     return train.schedule
       .filter((s) => s.stationName === localStorage.getItem("tostation"))
-      .map((s) => (
-        <p className="text-white">
+      .map((s, index) => (
+        <p key={index} className="text-white">
           {s.arrivalTime} | {s.stationName} | {arrivaltimedate}
         </p>
       ));
@@ -322,61 +330,67 @@ function Result() {
                 </div>
               </div>
               <div className="flex overflow-y-auto flex-col gap-2 p-4">
-                {trainarray?.map((train, index) => (
-                  <div
-                    key={index}
-                    className="h-[45vh] w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-2 p-2"
-                  >
-                    <div className="flex justify-between">
-                      <p className="text-white text-2xl">
-                        {train?.name}
-                        {`(${train.Train_no})`}
-                      </p>
-                      <div className="flex gap-2 text-white">
-                        Runs On :
-                        {train?.runningDays.map((days) => (
-                          <p className="text-white">{Day[days]}</p>
-                        ))}
+                {!trainarray ? (
+                  <p className="text-red-500 font-bold text--xl">
+                    Trains Not Available for this Route
+                  </p>
+                ) : (
+                  trainarray?.map((train, index) => (
+                    <div
+                      key={index}
+                      className="h-[45vh] w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-2 p-2"
+                    >
+                      <div className="flex justify-between">
+                        <p className="text-white text-2xl">
+                          {train?.name}
+                          {`(${train.Train_no})`}
+                        </p>
+                        <div className="flex gap-2 text-white">
+                          Runs On :
+                          {train?.runningDays.map((days) => (
+                            <p className="text-white">{Day[days]}</p>
+                          ))}
+                        </div>
+                        <p
+                          onClick={() => toggleModal(train)}
+                          className=" cursor-pointer text-cyan-500 font-bold text-xl"
+                        >
+                          {" "}
+                          Train Schedule
+                        </p>
                       </div>
-                      <p
-                        onClick={() => toggleModal(train)}
-                        className=" cursor-pointer text-cyan-500 font-bold text-xl"
-                      >
-                        {" "}
-                        Train Schedule
-                      </p>
-                    </div>
-                    <div className="flex justify-between ">
-                      <div className="text-white text-xl">
-                        {fromstationinfo(train)}
+                      <div className="flex justify-between ">
+                        <div className="text-white text-xl">
+                          {fromstationinfo(train)}
+                        </div>
+                        <p className="text-white text-xl">
+                          {" "}
+                          __________ {calculateDuration(train)} __________{" "}
+                        </p>
+                        <div className="text-white text-xl">
+                          {tostationinfo(train)}
+                        </div>
                       </div>
-                      <p className="text-white text-xl">
-                        {" "}
-                        __________ {calculateDuration(train)} __________{" "}
-                      </p>
-                      <div className="text-white text-xl">
-                        {tostationinfo(train)}
+                      <div className="flex gap-2 ">
+                        <button
+                          onClick={() => {
+                            navigate("/seatavailabilty", {
+                              state: {
+                                trainid: train._id,
+                                fromstation: fromstation,
+                                tostation: tostation,
+                                date: dateselect,
+                              },
+                            });
+                          }}
+                          className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+                        >
+                          Check seat Availabilty and Book Ticket
+                        </button>
                       </div>
                     </div>
-                    <div className="flex gap-2 ">
-                      <button
-                        onClick={() => {
-                          navigate("/seatavailabilty", {
-                            state: {
-                              trainid: train._id,
-                              fromstation: fromstation,
-                              tostation: tostation,
-                              date: currentDate,
-                            },
-                          });
-                        }}
-                        className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
-                      >
-                        Check seat Availabilty and Book Ticket
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
