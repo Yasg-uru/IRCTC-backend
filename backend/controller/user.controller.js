@@ -64,6 +64,7 @@ export const getdetail=catchasyncerror(async (req,res,next)=>{
 })
 
 export const forgotpassword = catchasyncerror(async (req, res, next) => {
+console.log("this is a email:",req.body.email)
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new Errorhandler("user not found", 404));
