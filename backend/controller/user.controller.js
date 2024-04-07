@@ -7,14 +7,14 @@ import uploadcloudianry from "../utils/cloudinary.util.js"
 export const createuser = catchasyncerror(async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    const cloudinary=await uploadcloudianry(req.file.path);
-    const profile=cloudinary.secure_url;
+    // const cloudinary=await uploadcloudianry(req.file.path);
+    // const profile=cloudinary.secure_url;
 
     const user = await User.create({
       name,
       email,
       password,
-      profile
+      // profile
       
     });
     sendtokenUtil(200, res, user);

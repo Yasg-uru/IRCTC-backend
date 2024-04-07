@@ -12,7 +12,7 @@ import {
   getseatavailability,
   getseatavailabilityprev,
 } from "../reducx-toolkit/TrainSlice";
-import "./Result.css";
+
 
 function Result() {
   const location = useLocation();
