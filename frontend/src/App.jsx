@@ -9,6 +9,7 @@ import Example from "./component/Example.jsx";
 import Bookticket from "./component/Bookticket.jsx";
 import Signup from "./component/Authcomponents/Signup.jsx";
 import Navbar from "./component/Authcomponents/Navbar.jsx";
+import Login from "./component/Authcomponents/Login.jsx";
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/register" element={<Signup />}></Route>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/" element={<Homepage />} />
+        
         <Route path="/result" element={<Result />} />
         <Route path="/seatavailabilty/" element={<Getseatavialbilityseats />}>
           <Route path="seat" element={<Seatavailabality />} />
