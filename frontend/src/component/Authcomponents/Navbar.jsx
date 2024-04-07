@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,30 +25,30 @@ const Navbar = () => {
               />
             </div>
             <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-100 focus:border-gray-300 transition duration-150 ease-in-out"
               >
                 Home
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/about"
                 className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-100 focus:border-gray-300 transition duration-150 ease-in-out"
               >
                 About
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/services"
                 className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-100 focus:border-gray-300 transition duration-150 ease-in-out"
               >
                 Services
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/contact"
                 className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-100 focus:border-gray-300 transition duration-150 ease-in-out"
               >
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
@@ -89,30 +89,30 @@ const Navbar = () => {
 
       <div className={`${isOpen ? "block" : "hidden"} sm:hidden`}>
         <div className="px-2 pt-2 pb-3">
-          <a
-            href="#"
+          <Link
+            to="/"
             className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-100 hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
           >
             Home
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/about"
             className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-100 hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
           >
             About
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/services"
             className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-100 hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
           >
             Services
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/contact"
             className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-100 hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
           >
             Contact
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

@@ -13,7 +13,7 @@ import Login from "./component/Authcomponents/Login.jsx";
 import Forgotpassword from "./component/Authcomponents/Forgotpassword.jsx";
 import Resetpassword from "./component/Authcomponents/Resetpassword.jsx";
 import Updatepassword from "./component/Authcomponents/Updatepassword.jsx";
-
+import NotfoundPage from "./component/Authcomponents/Notfoundpage.jsx";
 function App() {
   return (
     <>
@@ -31,6 +31,7 @@ function App() {
         </Route>
         <Route path="/bookticket" element={<Bookticket />} />
         <Route path="/example" element={<Example />}></Route>
+        <Route path="*" element={<NotfoundPage/>}/>
       </Routes>
     </>
   );

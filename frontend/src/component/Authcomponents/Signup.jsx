@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signup } from "../../reducx-toolkit/authSlice";
 import toast from "react-hot-toast";
-
+import { Link } from "react-router-dom";
 function Signup() {
   const [formdata, setformdata] = useState({
     name: "",
@@ -90,6 +90,12 @@ function Signup() {
         >
           Sign Up
         </button>
+        <p className="text-white font-bold">
+          If you already have an account ,then{" "}
+          <Link to="/login" className="text-green-500 font-bold">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );

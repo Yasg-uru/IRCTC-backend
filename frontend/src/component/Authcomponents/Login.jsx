@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../reducx-toolkit/authSlice";
+import { Link } from "react-router-dom";
 function Login() {
   const [formdata, setformdata] = useState({
     email: "",
@@ -59,6 +60,9 @@ function Login() {
         >
           Sign Up
         </button>
+        <p className="text-green-500 font-bold">
+          <Link to="/forgotpassword">Forgot Password?</Link>
+        </p>
       </form>
     </div>
   );

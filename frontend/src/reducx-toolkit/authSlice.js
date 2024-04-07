@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 const initialState = {
   isLoggedIn: localStorage.getItem("isLoggedin") || false,
 
-  role: "",
+  role: localStorage.getItem("role") || "",
 };
 export const signup = createAsyncThunk("/user/register", async (formdata) => {
   try {
@@ -114,11 +114,13 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signup.fulfilled, (state, action) => {
       localStorage.setItem("isLoggedin", true);
+      localStorage.setItem("role", action?.payload?.user?.role);
       state.isLoggedIn = true;
       state.role = action?.payload?.user?.role;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       localStorage.setItem("isLoggedin", true);
+      localStorage.setItem("role", action?.payload?.user?.role);
       state.isLoggedIn = true;
       state.role = action?.payload?.user?.role;
     });
