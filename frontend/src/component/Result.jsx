@@ -27,8 +27,10 @@ function Result() {
     setIsOpen(!isOpen);
   };
 
-  const [fromstation, setfromstation] = useState(location?.state?.fromstation);
-  const [tostation, settostation] = useState(location?.state?.tostation);
+  const [fromstation, setfromstation] = useState(
+    localStorage.getItem("fromstation")
+  );
+  const [tostation, settostation] = useState(localStorage.getItem("tostation"));
   const [dateselect, setselectdate] = useState(localStorage.getItem("date"));
   const [prices, setPrices] = useState([]);
   const [openindex, setopenindex] = useState(null);
@@ -62,19 +64,16 @@ function Result() {
     dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
   };
   useEffect(() => {
-    trainarray?.forEach(async (train) => {
-      await dispatch(
-        getpricecoachwise({
-          fromstation: fromstation,
-          tostation: tostation,
-          trainid: train._id,
-        })
-      );
-    });
+    // trainarray?.forEach(async (train) => {
+    //   await dispatch(
+    //     getpricecoachwise({
+    //       fromstation: fromstation,
+    //       tostation: tostation,
+    //       trainid: train._id,
+    //     })
+    //   );
+    // });
 
-    setselectdate(localStorage.getItem("date"));
-    setfromstation(localStorage.getItem("fromstation"));
-    settostation(localStorage.getItem("tostation"));
     dispatch(Searchtrain({ fromstation, tostation, date: dateselect }));
     setLoading(false);
   }, []);
@@ -335,7 +334,8 @@ function Result() {
                     Trains Not Available for this Route
                   </p>
                 ) : (
-                  trainarray?.map((train, index) => (
+                  trainarray &&
+                  trainarray.map((train, index) => (
                     <div
                       key={index}
                       className="h-[45vh] w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-2 p-2"

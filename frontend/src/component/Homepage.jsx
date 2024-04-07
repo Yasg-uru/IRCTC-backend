@@ -8,7 +8,7 @@ function Homepage() {
   const dispatch = useDispatch();
   const [fromstation, setfromstation] = useState("");
   const [tostation, settostation] = useState("");
-  const [selectdate, setselectdate] = useState("");
+  const [selectdate, setselectdate] = useState(new Date(Date.now()));
   const navigate = useNavigate();
   // const {isLoading,error}=useSelector((state)=>state.train)
 

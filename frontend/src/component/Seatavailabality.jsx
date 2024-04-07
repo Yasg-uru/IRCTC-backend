@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Searchtrain, getseatscharts } from "../reducx-toolkit/TrainSlice";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
-function Seatavailabilty({coachtype,locationdata}) {
-  const [selectseat, setselectseat] = useState(null);
-console.log("this is a coachtype :",coachtype);
-console.log("this is a locationdata :",locationdata);
-
+import { bookingticket } from "../reducx-toolkit/BookingSlice";
+import toast from "react-hot-toast";
+function Seatavailabilty({
+  coachtype,
+  locationdata,
+  date,
+  trainid,
+  from_station,
+  to_station,
+}) {
+  console.log("this is a coachtype :", coachtype);
+  console.log("this is a locationdata :", locationdata);
+  console.log(
+    "this is a another data props inside the seatavailabilty component :",
+    date,
+    trainid,
+    from_station,
+    to_station
+  );
   // const location = useLocation();
 
   const dispatch = useDispatch();
@@ -27,9 +41,37 @@ console.log("this is a locationdata :",locationdata);
   });
 
   const [coach, setcoach] = useState("");
+  const [selectseat, setselectseat] = useState(null);
+  function handlebookticket() {
+    if (!selectseat) {
+      toast.error("please select ticket");
+      return;
+    }
 
+    dispatch(
+      bookingticket({
+        trainid,
+        date,
+        from_station,
+        to_station,
+        coachType: coachtype,
+        seatNumber: selectseat,
+        categoryName: coach,
+      })
+    );
+  }
+  const navigate=useNavigate()
   return (
     <div className="text-white text-2xl h-[100vh] w-full flex flex-col overflow-y-auto">
+      <div className="h-[10vh] w-full p-4">
+        <button
+          onClick={handlebookticket}
+          className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-1 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+        >
+          {" "}
+          Select Seat & Book Ticket
+        </button>
+      </div>
       <div className="h-[10vh] w-full flex gap-2">
         {categoryNames?.map((category) => (
           <button
@@ -43,6 +85,7 @@ console.log("this is a locationdata :",locationdata);
           </button>
         ))}
       </div>
+
       <div className="grid grid-cols-5 gap-4">
         {coach &&
           seatcharts
@@ -52,6 +95,9 @@ console.log("this is a locationdata :",locationdata);
                 <div
                   key={s.SeatType.seatNumber}
                   className="flex flex-col items-center"
+                  onClick={() => {
+                    setselectseat(s.SeatType.seatNumber);
+                  }}
                 >
                   {s.isBooked === false ? (
                     <MdAirlineSeatReclineExtra size={50} color="green" />

@@ -7,6 +7,7 @@ import Getseatavialbilityseats from "./component/Getseatavialbilityseats.jsx"
 import Seatavailabality from "./component/Seatavailabality.jsx"
 import Loader from './component/Loader.jsx'
 import Example from './component/Example.jsx'
+import Bookticket from './component/Bookticket.jsx'
 
 function App() {
  
@@ -19,6 +20,7 @@ function App() {
       <Route path='/seatavailabilty/' element={<Getseatavialbilityseats/>}>
         <Route path='seat' element={<Seatavailabality/>}/>
       </Route>
+      <Route path='/bookticket' element={<Bookticket/>}/>
       <Route path='/example' element={<Example/>}>
 
       </Route>

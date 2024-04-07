@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const initialState = {
-  trainarray: [],
+  trainarray:  [],
   fromstation: localStorage.getItem("fromstation") || "",
   tostation: localStorage.getItem("tostation") || "",
   seat: [],
@@ -17,6 +17,7 @@ export const Searchtrain = createAsyncThunk(
       localStorage.setItem("fromstation", formdata.fromstation);
       localStorage.setItem("tostation", formdata.tostation);
       localStorage.setItem("date",formdata.date)
+      console.log("this is a date for formdata ",formdata.date)
       const response = await axios.post(
         `http://localhost:4000/api/Train/search`,
         formdata,

@@ -8,6 +8,7 @@ const initialState = {
 export const bookingticket = createAsyncThunk(
   "/booking/ticket",
   async (formdata) => {
+    console.log("this is a formdate for ticket booking :",formdata)
     try {
       const res = await axios.post(
         `http://localhost:4000/api/Book/seatBooking`,

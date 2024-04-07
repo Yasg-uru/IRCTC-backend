@@ -8,9 +8,10 @@ import {
   Searchtrain,
   getseatavailability,
 } from "../reducx-toolkit/TrainSlice.js";
+import { bookingticket } from "../reducx-toolkit/BookingSlice.js";
 function getseatavailabilityseats() {
   const [date, setdate] = useState(
-    new Date(Date.now()).toISOString().split("T")[0]
+    localStorage.getItem("date") || location.state.date
   );
   const location = useLocation();
   console.log(
@@ -22,7 +23,7 @@ function getseatavailabilityseats() {
   const tostation = localStorage.getItem("tostation");
   useEffect(() => {
     dispatch(getseatavailability(location?.state));
-    dispatch(Searchtrain({ fromstation, tostation }));
+    dispatch(Searchtrain({ fromstation, tostation, date }));
   }, []);
 
   const { trainarray } = useSelector((state) => state?.train);
@@ -45,6 +46,8 @@ function getseatavailabilityseats() {
     "this is a component that is select coach render ",
     selectcoachRender
   );
+  
+
   return (
     <div className="h-[100vh] w-full bg-black flex flex-col gap-2">
       <div className="flex gap-2 items-center cursor-pointer">
@@ -82,7 +85,7 @@ function getseatavailabilityseats() {
             </div>
           ))}
       </div>
-      <div className="h-[10vh] w-72 border-[0.5px] border-slate-100 flex justify-center items-center">
+      <div className="h-[10vh] w-full border-[0.5px] border-slate-100 flex justify-center items-center">
         <input
           type="date"
           placeholder="select date"
@@ -98,12 +101,18 @@ function getseatavailabilityseats() {
         >
           search by date
         </button>
+        
       </div>
       {/* logic for rendering the seatcharts component  */}
       {selectcoachRender && (
         <Seatavailabilty
           coachtype={selectcoachRender}
           locationdata={location?.state}
+          date={date}
+          from_station={location?.state?.fromstation}
+          to_station={location?.state?.tostation}
+          trainid={location?.state?.trainid}
+         
         />
       )}
     </div>
