@@ -7,6 +7,7 @@ const initialState = {
 
   role: localStorage.getItem("role") || "",
 };
+
 export const signup = createAsyncThunk("/user/register", async (formdata) => {
   try {
     const res = await axios.post(

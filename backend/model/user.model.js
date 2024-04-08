@@ -23,8 +23,12 @@ const userSchema = new Schema({
 
   role: {
     type: String,
-    enum: ["customer", "admin", "vender"],
-    default: "customer",
+    enum: ["user", "admin"],
+    default: "user",
+  },
+  bookedTickets: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "booking",
   },
 
   resetPasswordToken: String,

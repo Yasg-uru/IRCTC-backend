@@ -1,5 +1,23 @@
 import mongoose, { Schema, model } from "mongoose";
 const bookingSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
+  name: {
+    type: String,
+    required: [true, "please enter name"],
+  },
+  age: {
+    type: Number,
+    required: [true, "please Enter your age"],
+  },
+  Gender: {
+    type: String,
+    required: [true, "please Select your gender"],
+  },
+
   trainid: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Train",
@@ -16,17 +34,15 @@ const bookingSchema = new Schema({
     type: String,
     required: true,
   },
-  seats: 
-    {
-      coachType: String,
-      categoryName:String,
-      seatNumber: Number,
-      isBooked:{
-        type:Boolean,
-        default:false
-      }
+  seats: {
+    coachType: String,
+    categoryName: String,
+    seatNumber: Number,
+    isBooked: {
+      type: Boolean,
+      default: false,
     },
-  
+  },
 });
 const bookingmodel = model("booking", bookingSchema);
 export default bookingmodel;
