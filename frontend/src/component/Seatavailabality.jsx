@@ -40,6 +40,7 @@ function Seatavailabilty({
     }
   });
 
+  const navigate = useNavigate();
   const [coach, setcoach] = useState("");
   const [selectseat, setselectseat] = useState(null);
   function handlebookticket() {
@@ -47,20 +48,30 @@ function Seatavailabilty({
       toast.error("please select ticket");
       return;
     }
+    const data = {
+      trainid,
+      date,
+      from_station,
+      to_station,
+      coachType: coachtype,
+      seatNumber: selectseat,
+      categoryName: coach,
+    };
+    // localStorage.setItem("bookingdata",JSON.stringify(data));
+    navigate("/bokingform",{state:data})
 
-    dispatch(
-      bookingticket({
-        trainid,
-        date,
-        from_station,
-        to_station,
-        coachType: coachtype,
-        seatNumber: selectseat,
-        categoryName: coach,
-      })
-    );
+    // dispatch(
+    //   bookingticket({
+    //     trainid,
+    //     date,
+    //     from_station,
+    //     to_station,
+    //     coachType: coachtype,
+    //     seatNumber: selectseat,
+    //     categoryName: coach,
+    //   })
+    // );
   }
-  const navigate=useNavigate()
   return (
     <div className="text-white text-2xl h-[100vh] w-full flex flex-col overflow-y-auto">
       <div className="h-[10vh] w-full p-4">

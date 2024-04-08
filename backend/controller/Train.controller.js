@@ -15,7 +15,7 @@ export const create_Train = catchasynerror(async (req, res, next) => {
       price,
       date,
       schedule,
-      runningDays
+      runningDays,
     } = req.body;
 
     let seatNumber = 1;
@@ -44,7 +44,7 @@ export const create_Train = catchasynerror(async (req, res, next) => {
       coaches,
       price,
       schedule,
-      runningDays
+      runningDays,
     });
     res.status(200).json({
       success: true,
@@ -59,12 +59,17 @@ export const create_Train = catchasynerror(async (req, res, next) => {
 export const searchtrainbyorigintodestination = catchasynerror(
   async (req, res, next) => {
     try {
-      const { fromstation, tostation,date  } = req.body;
+      const { fromstation, tostation, date } = req.body;
       console.log(
-        "this is from stattion and tostation:" + fromstation + "  " + tostation +"     "+date 
+        "this is from stattion and tostation:" +
+          fromstation +
+          "  " +
+          tostation +
+          "     " +
+          date
       );
-      const selectedday=new Date(date);
-      const selectedDay=selectedday.getDay();
+      const selectedday = new Date(date);
+      const selectedDay = selectedday.getDay();
 
       const train = await Trainmodel.find({
         intermediate_stations: {
@@ -76,7 +81,7 @@ export const searchtrainbyorigintodestination = catchasynerror(
       }
       const resultarray = [];
       for (const Train of train) {
-        if(!Train?.runningDays.includes(selectedDay)){
+        if (!Train?.runningDays.includes(selectedDay)) {
           continue;
         }
         const fromstation_index = Train.intermediate_stations.findIndex(
@@ -173,7 +178,8 @@ export const getAvailableSeatCountsForAllCoachTypes = catchasynerror(
       } else if (previousdate === "true") {
         date.setDate(date.getDate() - 1);
       }
-      const dateString = date.toISOString().split("T")[0] + "T08:00:00Z";
+      const dateString = date.toISOString();
+      // const dateString = date.toISOString().split("T")[0] + "T08:00:00Z";
       console.log("Date:", dateString);
       const train = await Trainmodel.findById(trainid);
       if (!train) {
@@ -358,4 +364,3 @@ export const assignseatsforallcoaches = catchasynerror(
     }
   }
 );
-

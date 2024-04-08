@@ -18,7 +18,7 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
     seatNumber,
     categoryName,
   } = req.body;
-  console.log("this is a request body :", trainid);
+  // console.log("this is a request body :", trainid);
   // we will receive this information by the users
   //now implementing the logic of the this seatnumber is booked or not at this date for from_station to to_station
   const existingbooking = await BookingModel.find({
@@ -42,7 +42,7 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
   //   return !(isFromStationOverlap && isToStationOverlap);
   // });
   const train = await Trainmodel.findById(trainid);
-  console.log("this is a train :", train);
+  // console.log("this is a train :", train);
 
   const intermediate_stations = train.intermediate_stations;
   const overlap = existingbooking.some((booking) => {
@@ -88,7 +88,7 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
     }
   );
   const isAvailable = booked_seats.length === 0;
-  console.log("seat is available ", isAvailable);
+  // console.log("seat is available ", isAvailable);
   if (!isAvailable) {
     return next(
       new Errorhandler(

@@ -3,12 +3,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const initialState = {
-  bookingdata: {},
+  bookingdata: null,
 };
 export const bookingticket = createAsyncThunk(
   "/booking/ticket",
   async (formdata) => {
-    console.log("this is a formdate for ticket booking :",formdata)
+    console.log("this is a formdate for ticket booking :", formdata);
     try {
       const res = await axios.post(
         `http://localhost:4000/api/Book/seatBooking`,
@@ -26,7 +26,7 @@ export const bookingticket = createAsyncThunk(
 );
 
 const BookingSlice = createSlice({
-  name: "booking",
+  name: "book",
 
   initialState,
   reducers: {},

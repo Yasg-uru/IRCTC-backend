@@ -14,6 +14,8 @@ import Forgotpassword from "./component/Authcomponents/Forgotpassword.jsx";
 import Resetpassword from "./component/Authcomponents/Resetpassword.jsx";
 import Updatepassword from "./component/Authcomponents/Updatepassword.jsx";
 import NotfoundPage from "./component/Authcomponents/Notfoundpage.jsx";
+import BookingForm from "./component/BookingForm.jsx";
+import Ticket from "./component/Ticket.jsx";
 function App() {
   return (
     <>
@@ -30,6 +32,8 @@ function App() {
           <Route path="seat" element={<Seatavailabality />} />
         </Route>
         <Route path="/bookticket" element={<Bookticket />} />
+        <Route path="/bokingform" element={<BookingForm/>}/>
+        <Route path="/ticket" element={<Ticket/>}/>
         <Route path="/example" element={<Example />}></Route>
         <Route path="*" element={<NotfoundPage/>}/>
       </Routes>
