@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../reducx-toolkit/authSlice";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
 function Login() {
   const [formdata, setformdata] = useState({
     email: "",
@@ -16,6 +18,10 @@ function Login() {
   }
   const dispatch = useDispatch();
   function handlesubmitform(event) {
+    if(!formdata.email || !formdata.password){
+      toast.error("please fill all the fields")
+      return ;
+    }
     event.preventDefault();
     dispatch(login(formdata));
   }

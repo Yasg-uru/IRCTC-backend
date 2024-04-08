@@ -25,6 +25,7 @@ export const createuser = catchasyncerror(async (req, res, next) => {
 export const login = catchasyncerror(async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log("this is a email and password:",email+"      "+password)
     if (!email || !password) {
       return next(new Errorhandler("please Enter correct Email or password"));
     }
@@ -32,7 +33,8 @@ export const login = catchasyncerror(async (req, res, next) => {
     if (!user) {
       return next(new Errorhandler("'please enter correct email or password"));
     }
-    const compare =  user.comparepassword(password);
+    console.log("this is a user in login form :",user)
+    const compare =  await user.comparepassword(password);
     if (!compare) {
       return next(new Errorhandler("please enter correct email or password"));
     }
