@@ -2,6 +2,7 @@ import BookingModel from "../model/Booking.model.js";
 import Trainmodel from "../model/train.model.js";
 import catchasynerror from "../middleware/catchasynerror.middleware.js";
 import Errorhandler from "../utils/Errorhandler.utils.js";
+import { getSeatType } from "./Train.controller.js";
 export const CreateBooking = catchasynerror(async (req, res, next) => {
   const user = req.user._id;
 
@@ -115,12 +116,38 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
     to_station,
     seats,
   });
+
+  const { schedule } = train;
+  let fd = schedule.find((s) => s.stationName === from_station);
+  let td = schedule.find((s) => s.stationName === to_station);
+  if (!fd || !td) {
+    return next(new Errorhandler("Invalid stations"));
+  }
+  const totalDistance = td.distance - fd.distance;
+  let departuretime = new Date(date + "T" + fd.departureTime);
+  let arrivaldate = new Date(date + "T" + td.arrivalTime);
+  if (arrivaldate < departuretime) {
+    arrivaldate.setDate(arrivaldate.getDate() + 1);
+  }
+  const arrivaltime = td.arrivalTime;
+  const seatType = getSeatType(seatNumber);
+  const trainname = train.name;
+  const train_Number = train.Train_no;
+
   res.status(200).json({
     success: true,
-    message: "your ticket booked successfully",
+    message: "Your ticket booked successfully",
     booking,
+    startDate: departuretime.toDateString(), // assuming 'date' is the start date
+    endDate: arrivaldate.toDateString(), // use adjusted arrival date
+    totalDistance,
+    arrivaltime,
+    seatType,
+    trainname,
+    train_Number,
   });
 });
+
 export const getavailableseatcounts = catchasynerror(async (req, res, next) => {
   try {
     const { trainid, date, from_station, to_station, coachtype } = req.body;

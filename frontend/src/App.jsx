@@ -33,7 +33,7 @@ function App() {
         </Route>
         <Route path="/bookticket" element={<Bookticket />} />
         <Route path="/bokingform" element={<BookingForm/>}/>
-        <Route path="/ticket" element={<Ticket/>}/>
+        <Route path="/printticket" element={<Ticket/>}/>
         <Route path="/example" element={<Example />}></Route>
         <Route path="*" element={<NotfoundPage/>}/>
       </Routes>

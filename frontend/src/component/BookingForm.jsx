@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingticket } from "../reducx-toolkit/BookingSlice";
+import toast from "react-hot-toast";
 
 function BookingForm() {
   const location = useLocation();
@@ -15,7 +16,7 @@ function BookingForm() {
     trainid: bookingdata.trainid,
     date: bookingdata.date,
     from_station: bookingdata.from_station,
-    to_station: bookingdata.from_station,
+    to_station: bookingdata.to_station,
     coachType: bookingdata.coachType,
     seatNumber: bookingdata.seatNumber,
     categoryName: bookingdata.categoryName,
@@ -31,12 +32,9 @@ function BookingForm() {
   const navigate = useNavigate();
   function handlesubmit(event) {
     event.preventDefault();
-    dispatch(bookingticket(formdata));
-
-    const { bookingdata } = useSelector((state) => state.book);
-    if (bookingdata !== null) {
-      navigate("/ticket");
-    }
+    dispatch(bookingticket(formdata))
+  
+    
   }
   return (
     <div className="min-h-screen w-full bg-black flex flex-col justify-center items-center">

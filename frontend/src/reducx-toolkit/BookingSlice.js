@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const initialState = {
-  bookingdata: null,
+  bookingdata: {},
 };
 export const bookingticket = createAsyncThunk(
   "/booking/ticket",

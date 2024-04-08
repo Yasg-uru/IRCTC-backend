@@ -229,7 +229,7 @@ export const getseatavailabilityofallthetrains = catchasynerror(
   }
 );
 
-function getSeatType(seatNumber) {
+ export function getSeatType(seatNumber) {
   // Calculate theseatNumber when dividing seatNumber by 16
 
   // Determine the seat type based on theseatNumber
