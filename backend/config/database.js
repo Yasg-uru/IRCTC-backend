@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const connectDatabase=async function(){
 try {
-    const response=await mongoose.connect(`mongodb://127.0.0.1:27017/railway-reservation`)
+    const response=await mongoose.connect(process.env.MONGO_URL)
     console.log(`database is connected with ${response.connection.host }`)
 } catch (error) {
     console.log(`error is occured in connection of database :${error?.message}`)
