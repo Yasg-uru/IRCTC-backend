@@ -3,7 +3,7 @@ import catchasyncerror from "../middleware/catchasynerror.middleware.js";
 import Errorhandler from "../utils/Errorhandler.utils.js";
 import sendtokenUtil from "../utils/sendtoken.util.js";
 import sendmail from "../utils/sendmail.util.js"
-import uploadcloudianry from "../utils/cloudinary.util.js"
+
 export const createuser = catchasyncerror(async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
