@@ -15,6 +15,9 @@ app.use(cors({
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(cookieParser())
+app.get('/ping', (req, res) => {
+    res.send('PONG')
+});
 app.use("/api/user",userRouter)
 app.use("/api/Train",TrainRouter)
 app.use("/api/Book",BookingRouter)
