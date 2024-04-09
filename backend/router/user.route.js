@@ -19,7 +19,7 @@ import {
 } from "../controller/user.controller.js";
 
 const router = express.Router();
-router.route("/register").post(upload.single("profile"), createuser);
+router.route("/register").post( createuser);
 router.route("/login").post(login);
 router.route("/logout").post(logout);
 router.route("/me").get(isAuthenticated, getdetail);
