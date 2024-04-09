@@ -5,20 +5,20 @@ import crypto from "crypto";
 const userSchema = new Schema({
   name: {
     type: String,
-    require: [true, "please enter your name "],
+    required: [true, "please enter your name "],
   },
   email: {
     type: String,
     unique: true,
     match: [/^\S+@\S+\.\S+$/, "Invalid email address"],
-    require: true,
+    required: true,
   },
   profile: {
     type: String,
   },
   password: {
     type: String,
-    require: [true, "please enter password"],
+    required: [true, "please enter password"],
   },
 
   role: {
