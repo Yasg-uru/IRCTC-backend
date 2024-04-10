@@ -55,7 +55,13 @@ export const create_Train = catchasynerror(async (req, res, next) => {
     return next(new Errorhandler(error?.message, 500));
   }
 });
-
+export const gettrains=catchasynerror(async(req,res,next)=>{
+  const train=await Trainmodel.find();
+  res.status(200).json({
+    success:true,
+    train
+  })
+})
 export const searchtrainbyorigintodestination = catchasynerror(
   async (req, res, next) => {
     try {

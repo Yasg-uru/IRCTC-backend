@@ -4,6 +4,7 @@ import {
   create_Train,
   getAvailableSeatCountsForAllCoachTypes,
   getcostofticket,
+  gettrains,
   searchtrainbyorigintodestination,
 } from "../controller/Train.controller.js";
 const router = express.Router();
@@ -13,5 +14,5 @@ router.route("/search").post(searchtrainbyorigintodestination);
 router.route("/getavailability").post(getAvailableSeatCountsForAllCoachTypes);
 router.route("/price/ticket").post(getcostofticket);
 router.route("/assignseat").post(assignseatsforallcoaches);
-
+router.route('/get').get(gettrains);
 export default router;
