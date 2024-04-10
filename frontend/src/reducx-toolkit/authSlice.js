@@ -11,7 +11,7 @@ const initialState = {
 export const signup = createAsyncThunk("/user/register", async (formdata) => {
   try {
     const res = await axios.post(
-      `http://localhost:4000/api/user/register`,
+      `https://irctc-backend.vercel.app/api/user/register`,
       formdata,
       {
         withCredentials: true,
@@ -26,7 +26,7 @@ export const signup = createAsyncThunk("/user/register", async (formdata) => {
 export const login = createAsyncThunk("/auth/login", async (formdata) => {
   try {
     const res = await axios.post(
-      "http://localhost:4000/api/user/login",
+      "https://irctc-backend.vercel.app/api/user/login",
       formdata,
       {
         withCredentials: true,
@@ -40,7 +40,7 @@ export const login = createAsyncThunk("/auth/login", async (formdata) => {
 });
 export const me = createAsyncThunk("/auth/me", async () => {
   try {
-    const res = await axios.get("http://localhost:4000/api/user/me", {
+    const res = await axios.get("https://irctc-backend.vercel.app/api/user/me", {
       withCredentials: true,
     });
     toast.success("fechted your profile successfully ");
@@ -54,7 +54,7 @@ export const forgotpassword = createAsyncThunk(
   async (email) => {
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/user/forgotpassword",
+        "https://irctc-backend.vercel.app/api/user/forgotpassword",
         { email },
         {
           withCredentials: true,
@@ -74,7 +74,7 @@ export const resetpassword = createAsyncThunk(
   async (formdata) => {
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/user/resetpassword",
+        "https://irctc-backend.vercel.app/api/user/resetpassword",
         formdata,
         {
           withCredentials: true,
@@ -94,7 +94,7 @@ export const updatepassword = createAsyncThunk(
   async (formdata) => {
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/user/updatepassword",
+        "https://irctc-backend.vercel.app/api/user/updatepassword",
         formdata,
         {
           withCredentials: true,

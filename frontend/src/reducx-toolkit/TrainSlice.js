@@ -19,7 +19,7 @@ export const Searchtrain = createAsyncThunk(
       localStorage.setItem("date",formdata.date)
       console.log("this is a date for formdata ",formdata.date)
       const response = await axios.post(
-        `http://localhost:4000/api/Train/search`,
+        `https://irctc-backend.vercel.app/api/Train/search`,
         formdata,
         {
           withCredentials: true,
@@ -43,7 +43,7 @@ export const getpricecoachwise = createAsyncThunk(
     console.log("this is a price formdata :", formdata);
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/Train/price/ticket`,
+        `https://irctc-backend.vercel.app/api/Train/price/ticket`,
         formdata,
         {
           withCredentials: true,
@@ -74,7 +74,7 @@ export const getseatavailability = createAsyncThunk(
 
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/Train/getavailability`,
+        `https://irctc-backend.vercel.app/api/Train/getavailability`,
         maindata,
 
         {
@@ -97,7 +97,7 @@ export const getseatavailabilityprev = createAsyncThunk(
   async (formdata) => {
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/Train/getavailability?previousdate=true`,
+        `https://irctc-backend.vercel.app/api/Train/getavailability?previousdate=true`,
         formdata,
 
         {
@@ -120,7 +120,7 @@ export const getseatavailabilitynext = createAsyncThunk(
   async (formdata) => {
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/Train/getavailability?nextdate=true`,
+        `https://irctc-backend.vercel.app/api/Train/getavailability?nextdate=true`,
         formdata,
 
         {
@@ -153,7 +153,7 @@ export const getseatscharts = createAsyncThunk(
     }
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/Train/assignseat`,
+        `https://irctc-backend.vercel.app/api/Train/assignseat`,
         formdata,
         {
           withCredentials: true,
