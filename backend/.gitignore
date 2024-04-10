@@ -1,6 +1,5 @@
 node_modules
-package.json
-package-lock.json
+
 .env
 .env.development.local
 .env.test.local
