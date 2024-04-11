@@ -7,9 +7,13 @@ import {useSelector} from "react-redux";
 
 function Ticket() {
   const location=useLocation();
-  console.log("this is a location ticket data :",location.state)
-  const bookingdata=useSelector((state)=>state.book.bookingdata) || localStorage.getItem("booking") || {};
-console.log("this is a booking data :",bookingdata)
+  
+  const bookingdataFromRedux = useSelector((state) => state.book.bookingdata);
+  const bookingdataFromLocalStorage = JSON.parse(localStorage.getItem("booking"));
+  
+  const bookingdata = bookingdataFromRedux || bookingdataFromLocalStorage || {};
+  console.log("this is a booking data :",bookingdata)
+
   // const bookingdata = {
   //   user: "6613911bed37de7fb8072702",
   //   name: "yash choudhary",
