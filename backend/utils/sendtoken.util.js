@@ -7,8 +7,6 @@ const  sendtoken = function (statuscode, res, user) {
       Date.now() + parseInt(process.env.COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: true,
-    sameSite: "strict",
     
     
   };
