@@ -55,7 +55,7 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden sm:flex sm:items-center sm:ml-6">
-            {!isLoggedIn ? (
+           
               <button
                 onClick={() => {
                   navigate("/register");
@@ -64,16 +64,7 @@ const Navbar = () => {
               >
                 Signup
               </button>
-            ) : (
-              <button
-                onClick={() => {
-                  navigate("/login");
-                }}
-                className="bg-gradient-to-r from-purple-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-              >
-                Login
-              </button>
-            )}
+          
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button
