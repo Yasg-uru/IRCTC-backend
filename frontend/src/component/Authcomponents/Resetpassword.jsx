@@ -19,7 +19,7 @@ function Resetpassword() {
       return ;
     }
 
-    dispatch(resetpassword(formdata,token));
+    dispatch(resetpassword({formdata,token}));
   }
   function handlechange(event) {
     const { name, value } = event.target;

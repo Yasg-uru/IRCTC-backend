@@ -71,11 +71,11 @@ export const forgotpassword = createAsyncThunk(
 );
 export const resetpassword = createAsyncThunk(
   "/auth/resetpassword",
-  async (formdata,token) => {
+  async (form) => {
     try {
       const res = await axios.post(
-        `https://irctc-backend.vercel.app/api/user/resetpassword/${token}`,
-        formdata,
+        `https://irctc-backend.vercel.app/api/user/resetpassword/${form.token}`,
+        form.formdata,
         {
           withCredentials: true,
         }
