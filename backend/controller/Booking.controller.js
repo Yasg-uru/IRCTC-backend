@@ -44,6 +44,10 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
   // });
   const train = await Trainmodel.findById(trainid);
   // console.log("this is a train :", train);
+  if(train.length===0){
+    return next(new Errorhandler("Train not found",404))
+
+  }
 
   const intermediate_stations = train.intermediate_stations;
   const overlap = existingbooking.some((booking) => {

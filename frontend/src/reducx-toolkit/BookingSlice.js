@@ -14,7 +14,7 @@ export const bookingticket = createAsyncThunk(
         `https://irctc-backend.vercel.app/api/Book/seatBooking`,
         formdata,
         {
-          withCredentials: true,
+          withCredentials:true
         }
       );
       toast.success("Ticket Booked successfully");
