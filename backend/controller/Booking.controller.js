@@ -4,7 +4,7 @@ import catchasynerror from "../middleware/catchasynerror.middleware.js";
 import Errorhandler from "../utils/Errorhandler.utils.js";
 import { getSeatType } from "./Train.controller.js";
 export const CreateBooking = catchasynerror(async (req, res, next) => {
-  const user = req.user._id;
+  // const user = req.user._id;
 
   const {
     name,
@@ -107,7 +107,7 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
   };
   const booking = await BookingModel.create({
     name,
-    user,
+    // user,
     age,
     Gender,
     trainid,
