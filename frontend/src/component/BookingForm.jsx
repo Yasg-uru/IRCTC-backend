@@ -32,8 +32,10 @@ function BookingForm() {
   const navigate = useNavigate();
   function handlesubmit(event) {
     event.preventDefault();
-    dispatch(bookingticket(formdata))
-    navigate("/printticket")
+    dispatch(bookingticket(formdata)).then(()=>{
+
+      navigate("/printticket")
+    })
   
     
   }
