@@ -14,6 +14,7 @@ function Resetpassword() {
 
   function handlesubmitform(event) {
     event.preventDefault();
+    console.log("this is formdata of the resetpassword:",formdata)
     if (!FormData.password || !FormData.confirmpassword) {
       toast.error("please enter the valid password");
       return ;
