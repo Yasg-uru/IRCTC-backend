@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { resetpassword } from "../../reducx-toolkit/authSlice";
+import { useSearchParams } from "react-router-dom";
 
 function Resetpassword() {
   const [formdata, setformdata] = useState({
@@ -9,6 +10,7 @@ function Resetpassword() {
     confirmpassword: "",
   });
   const dispatch = useDispatch();
+  const {token}=useSearchParams();
 
   function handlesubmitform(event) {
     event.preventDefault();
@@ -16,7 +18,7 @@ function Resetpassword() {
       toast.error("please enter the valid password");
     }
 
-    dispatch(resetpassword(formdata));
+    dispatch(resetpassword(formdata,token));
   }
   function handlechange(event) {
     const { name, value } = event.target;

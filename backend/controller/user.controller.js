@@ -74,9 +74,7 @@ console.log("this is a email:",req.body.email)
   const token =await user.getresetpasswordtoken();
   await user.save({ validateBeforeSave: false });
 
-  const resetPassword = `${req.protocol}://${req.get(
-    "host"
-  )}/getnotes/password/reset/${token}`;
+  const resetPassword = `https://irctc-backend-mmjp.vercel.app/reset/${token}`;
   console.log(resetPassword);
 
   const message = `Your password reset token is:\n\n${resetPassword}\n\nIf you have not requested this email, please ignore it.`;

@@ -25,7 +25,7 @@ router.route("/logout").post(logout);
 router.route("/me").get(isAuthenticated, getdetail);
 
 router.route("/forgotpassword").post(forgotpassword);
-router.route("/resetpassword").post(resetpassword);
+router.route("/resetpassword/:token").post(resetpassword);
 router.route("/updatepassword").put(isAuthenticated, updatepassword);
 router
   .route("/getalluser")
