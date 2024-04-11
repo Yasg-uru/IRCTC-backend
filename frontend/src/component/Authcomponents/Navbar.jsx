@@ -138,16 +138,7 @@ const Navbar = () => {
             Contact
           </Link>
         </div>
-        {!isLoggedIn ? (
-          <button
-            onClick={() => {
-              navigate("/register");
-            }}
-            className="bg-gradient-to-r from-purple-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            Signup
-          </button>
-        ) : (
+       
           <button
             onClick={() => {
               navigate("/register");
@@ -156,7 +147,7 @@ const Navbar = () => {
           >
             Register
           </button>
-        )}
+       
       </div>
     </nav>
   );
