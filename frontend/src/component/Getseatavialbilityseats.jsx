@@ -49,7 +49,7 @@ function getseatavailabilityseats() {
   
 
   return (
-    <div className="h-[100vh] w-full bg-black flex flex-col gap-2">
+    <div className="min-h-screen w-full bg-black flex flex-col gap-2">
       <div className="flex gap-2 items-center cursor-pointer">
         <GrLinkPrevious color="red" size={28} />
         <p
