@@ -44,9 +44,13 @@ function Seatavailabilty({
   const [coach, setcoach] = useState("");
   const [selectseat, setselectseat] = useState(null);
   function handlebookticket() {
-    if (!selectseat) {
+    if (!selectseat ) {
       toast.error("please select ticket");
       return;
+    }
+    if(selectseat.isBooked===true){
+      toast.error("seat is already booked");
+      return ;
     }
     const data = {
       trainid,
@@ -54,23 +58,13 @@ function Seatavailabilty({
       from_station,
       to_station,
       coachType: coachtype,
-      seatNumber: selectseat,
+      seatNumber: selectseat.SeatType.seatNumber,
       categoryName: coach,
     };
     // localStorage.setItem("bookingdata",JSON.stringify(data));
     navigate("/bokingform", { state: data });
 
-    // dispatch(
-    //   bookingticket({
-    //     trainid,
-    //     date,
-    //     from_station,
-    //     to_station,
-    //     coachType: coachtype,
-    //     seatNumber: selectseat,
-    //     categoryName: coach,
-    //   })
-    // );
+
   }
   return (
     <div className="text-white text-2xl h-[100vh] w-full flex flex-col overflow-y-auto">
@@ -106,7 +100,7 @@ function Seatavailabilty({
                   key={s.SeatType.seatNumber}
                   className="flex flex-col items-center"
                   onClick={() => {
-                    setselectseat(s.SeatType.seatNumber);
+                    setselectseat(s);
                   }}
                 >
                   {s.isBooked === false ? (

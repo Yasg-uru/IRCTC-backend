@@ -33,6 +33,7 @@ function BookingForm() {
   function handlesubmit(event) {
     event.preventDefault();
     dispatch(bookingticket(formdata))
+    navigate("/printticket")
   
     
   }
