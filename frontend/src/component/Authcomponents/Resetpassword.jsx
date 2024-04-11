@@ -16,6 +16,7 @@ function Resetpassword() {
     event.preventDefault();
     if (!FormData.password || !FormData.confirmpassword) {
       toast.error("please enter the valid password");
+      return ;
     }
 
     dispatch(resetpassword(formdata,token));
