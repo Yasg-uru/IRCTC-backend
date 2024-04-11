@@ -9,11 +9,8 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "server.js",
-            "methods":["GET","POST","DELETE","PUT"],
-            "headers":{
-                "Access-Control-Allow-Origin":"https://irctc-backend-mmjp.vercel.app"
-            }
+            "dest": "server.js"
+         
         }
     ]
 }
