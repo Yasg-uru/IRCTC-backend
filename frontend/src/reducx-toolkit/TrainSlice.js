@@ -77,9 +77,7 @@ export const getseatavailability = createAsyncThunk(
         `https://irctc-backend.vercel.app/api/Train/getavailability`,
         maindata,
 
-        {
-          withCredentials: true,
-        }
+       
       );
       console.log(
         "this is a formdata inside the getseatavailability :",
