@@ -8,7 +8,7 @@ import userRouter from "./router/user.route.js"
 
 const app=express()
 app.use(cors({
-    origin:"https://irctc-backend-mmjp.vercel.app/",
+    origin:"https://irctc-backend-mmjp.vercel.app",
     credentials:true
 
 }))
