@@ -1,0 +1,16 @@
+/* Customize the appearance of the scrollbar */
+/* Set the width of the scrollbar */
+.search-results::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Set the background color of the scrollbar track */
+.search-results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Set the color of the scrollbar thumb */
+.search-results::-webkit-scrollbar-thumb {
+  background-color: #4a5568;
+  border-radius: 4px;
+}
