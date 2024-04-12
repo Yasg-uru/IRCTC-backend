@@ -1137,7 +1137,7 @@ function Result() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-4 p-4 max-w-sm ">
+              <div className="flex flex-col gap-4 p-4 w-full">
                 {!trainarray ? (
                   <p className="text-red-500 font-bold text-xl">
                     Trains Not Available for this Route
@@ -1147,7 +1147,7 @@ function Result() {
                   trainarray.map((train, index) => (
                     <div
                       key={index}
-                      className="w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-4 p-4"
+                      className="w-full max-w-sm border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-4 p-4"
                     >
                       <div className="flex flex-col gap-4 md:flex-row md:items-center">
                         <div className="flex justify-between items-center">
