@@ -1088,8 +1088,8 @@ function Result() {
             </div>
           </div>
           <div className="grid grid-cols-10 ">
-            <div className="col-span-2  h-screen"></div>
-            <div className="col-span-8  h-screen">
+            <div className="col-span-2 hidden md:block lg:block h-screen"></div>
+            <div className="md:col-span-8  col-span-10 h-screen">
               <div>
                 <div className="h-auto w-full p-2  mt-2 gap-2 flex  md:flex-row flex-col items-center ">
                   <div>
@@ -1137,7 +1137,7 @@ function Result() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-4 p-4 w-full">
+              <div className="flex flex-col gap-4 p-4 w-full md:block lg:block mt-5">
                 {!trainarray ? (
                   <p className="text-red-500 font-bold text-xl">
                     Trains Not Available for this Route
