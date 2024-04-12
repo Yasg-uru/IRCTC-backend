@@ -94,6 +94,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Searchtrain } from "../reducx-toolkit/TrainSlice";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 import "./Homepage.css";
 function Homepage() {
   const dispatch = useDispatch();
@@ -102,6 +103,7 @@ function Homepage() {
   const [selectdate, setselectdate] = useState(new Date(Date.now()));
   const [searchResultsfromstation, setSearchResultsfromstation] = useState([]);
   const [searchResulttostation, setsearchResulttostation] = useState([]);
+  const [isLoading, setisLoading] = useState(false);
   const navigate = useNavigate();
   // const {isLoading,error}=useSelector((state)=>state.train)
   const formRef = useRef(null);
@@ -109,7 +111,7 @@ function Homepage() {
     const currentdate = new Date().toISOString().split("T")[0];
     setselectdate(currentdate);
     document.addEventListener("click", handleoutsideclick);
-    
+
     return () => {
       document.removeEventListener("click", handleoutsideclick);
     };
@@ -145,7 +147,7 @@ function Homepage() {
       setSearchResultsfromstation([]);
     } else {
       settostation(suggestion);
-     setsearchResulttostation([]);
+      setsearchResulttostation([]);
     }
   }
   const HandleReverse = () => {
@@ -155,6 +157,7 @@ function Homepage() {
   };
   const submitform = async (event) => {
     event.preventDefault();
+    setisLoading(true);
     await dispatch(
       Searchtrain({
         fromstation,
@@ -162,7 +165,7 @@ function Homepage() {
         date: selectdate,
       })
     );
-
+    setisLoading(false);
     navigate("/result", {
       state: {
         fromstation: fromstation,
@@ -171,7 +174,9 @@ function Homepage() {
       },
     });
   };
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="min-h-screen w-full bg-black flex justify-center items-center">
       <form
         onSubmit={submitform}
@@ -236,7 +241,6 @@ function Homepage() {
                       {result}
                     </li>
                   ))}
-                  
                 </ul>
               )}
             </>
