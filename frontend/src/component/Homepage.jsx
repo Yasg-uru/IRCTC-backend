@@ -172,11 +172,11 @@ function Homepage() {
     });
   };
   return (
-    <div className="h-[100vh] w-full bg-black flex justify-center items-center">
+    <div className="min-h-screen w-full bg-black flex justify-center items-center">
       <form
         onSubmit={submitform}
         ref={formRef}
-        className="h-[60vh] w-[50vw] shadow-lg shadow-white rounded-lg flex p-2 flex-col gap-3"
+        className="w-full  h-auto max-w-sm shadow-lg shadow-white rounded-lg flex p-2 flex-col gap-3"
       >
         <h1 className="text-white text-2xl text-center font-bold ">
           Book Ticket
