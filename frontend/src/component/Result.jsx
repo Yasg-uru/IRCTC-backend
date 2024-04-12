@@ -1114,10 +1114,10 @@ function Result() {
                 </div>
                 <div className="h-[10vh] w-full p-2 flex flex-col md:flex-row justify-between items-center">
                   <div className="flex flex-wrap gap-2">
-                    <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                    <button className=" sm:hidden bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
                       Sort By Duration
                     </button>
-                    <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                    <button className=" sm:hidden bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
                       Show Available Trains
                     </button>
                   </div>
