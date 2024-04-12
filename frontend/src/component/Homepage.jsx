@@ -145,7 +145,7 @@ function Homepage() {
       setSearchResultsfromstation([]);
     } else {
       settostation(suggestion);
-      searchResulttostation([]);
+     setsearchResulttostation([]);
     }
   }
   const HandleReverse = () => {
@@ -236,7 +236,7 @@ function Homepage() {
                       {result}
                     </li>
                   ))}
-                  \
+                  
                 </ul>
               )}
             </>
