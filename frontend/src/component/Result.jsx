@@ -672,8 +672,8 @@ function Result() {
         <Loader />
       ) : (
         <div className="h-screen w-full bg-black p-2 flex flex-col overflow-y-auto">
-          <div className="flex gap-4 p-4 w-full shadow-2xl shadow-white mt-3 h-20 items-center">
-            <div className="flex gap-2 h-10">
+          <div className="flex gap-4 p-4 w-full shadow-2xl shadow-white mt-3 h-auto items-center">
+            <div className="flex gap-2 h-auto">
               <input
                 type="text"
                 name="fromstation"
@@ -681,7 +681,7 @@ function Result() {
                 onChange={(e) => {
                   setfromstation(e.target.value);
                 }}
-                className="text-white bg-black rounded-md "
+                className="text-white bg-black rounded-md mb-2"
               />
               <FaExchangeAlt size={30} color="white" onClick={handleexchange} />
               <input
