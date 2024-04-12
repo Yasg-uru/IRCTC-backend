@@ -1095,7 +1095,7 @@ return  (
           <div className="col-span-2  h-screen"></div>
           <div className="col-span-8  h-screen">
             <div>
-              <div className="h-auto w-full p-2  mt-2 gap-2 flex flex-col md:flex-row items-center ">
+              <div className="h-auto w-full p-2  mt-2 gap-2 flex  md:flex-colflex-row items-center ">
                 <div>
                   <p className="text-white text-2xl ">
                     {trainarray?.length} Result for{" "}
