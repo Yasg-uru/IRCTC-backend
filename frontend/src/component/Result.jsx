@@ -666,14 +666,15 @@ function Result() {
     return `${Day[day]}, ${date} ${months[month]} ${year}`;
   };
 
+  
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <div className="h-screen w-full bg-black p-2 flex flex-col overflow-y-auto">
-          <div className="flex gap-4 p-4 w-full shadow-2xl shadow-white mt-3 h-auto items-center">
-            <div className="flex gap-2 h-auto">
+        <div className="h-[100vh] w-full bg-black p-2 flex flex-col overflow-y-auto ">
+          {/* <div className="flex gap-4 p-4 w-full shadow-2xl shadow-white mt-3 h-[10vh] items-center">
+            <div className="flex gap-2 h-[30px]">
               <input
                 type="text"
                 name="fromstation"
@@ -681,7 +682,7 @@ function Result() {
                 onChange={(e) => {
                   setfromstation(e.target.value);
                 }}
-                className="text-white bg-black rounded-md mb-2"
+                className="text-white bg-black rounded-md "
               />
               <FaExchangeAlt size={30} color="white" onClick={handleexchange} />
               <input
@@ -694,7 +695,7 @@ function Result() {
                 className="text-white bg-black rounded-md "
               />
             </div>
-            <div className="h-10 ">
+            <div className="h-[30px] ">
               <input
                 type="date"
                 value={dateselect}
@@ -748,12 +749,83 @@ function Result() {
                 Modify Search
               </button>
             </div>
+          </div> */}
+          <div className="p-4 shadow-2xl shadow-white mt-3">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex gap-2 flex-grow">
+            <input
+              type="text"
+              name="fromstation"
+              value={fromstation}
+              onChange={(e) => {
+                setfromstation(e.target.value);
+              }}
+              className="text-white bg-black rounded-md mb-2 flex-grow"
+              placeholder="From Station"
+            />
+            <FaExchangeAlt
+              size={30}
+              color="white"
+              onClick={handleexchange}
+              className="self-center cursor-pointer"
+            />
+            <input
+              type="text"
+              name="tostation"
+              value={tostation}
+              onChange={(e) => {
+                settostation(e.target.value);
+              }}
+              className="text-white bg-black rounded-md flex-grow"
+              placeholder="To Station"
+            />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-10 ">
-            <div className="md:col-span-2  h-full"></div>
-            <div className="md:col-span-8  h-full overflow-y-auto">
+          <div className="flex flex-col md:flex-row gap-2 md:items-center">
+            <input
+              type="date"
+              value={dateselect}
+              onChange={(e) => {
+                setselectdate(e.target.value);
+              }}
+              className="bg-black text-white border-2 rounded-sm border-white mb-2 md:mb-0"
+            />
+            <select
+              className="block appearance-none bg-gray-800 border border-gray-600 hover:border-gray-500 text-white px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              name=""
+              id=""
+            >
+               <option className="text-gray-300">All Classes</option>
+                <option value="EA">Anubhuti Class (EA)</option>
+                <option value="1A">AC First Class (1A)</option>
+                <option value="EV">Vistadom AC (EV)</option>
+                <option value="EC">Exec Chair Car (EC)</option>
+                <option value="2A">AC 2 Tier (2A)</option>
+                <option value="FC">First Class (FC)</option>
+                <option value="2A">AC 2 Tier (2A)</option>
+                <option value="3E">AC 3 Economy (3E)</option>
+                <option value="VC">Vistadom Chair Car (VC)</option>
+                <option value="CC">Ac Chair Car (VC)</option>
+                <option value="SL">Sleeper (SL)</option>
+                <option value="VS">Vistadom Non AC (VS)</option>
+                <option value="2S">Second Sitting (2S)</option>
+              
+            </select>
+          </div>
+          <div className="flex justify-end md:items-center">
+            <button
+              onClick={handlemodifysearch}
+              className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+            >
+              Modify Search
+            </button>
+          </div>
+        </div>
+      </div>
+          <div className="grid grid-cols-10 ">
+            <div className="col-span-2  h-[100vh]"></div>
+            <div className="col-span-8  h-[100vh]">
               <div>
-                <div className="h-20 w-full p-2  mt-2 gap-2 flex items-center">
+                <div className="h-[10vh] w-full p-2  mt-2 gap-2 flex items-center">
                   <div>
                     <p className="text-white text-2xl ">
                       {trainarray?.length} Result for{" "}
@@ -774,95 +846,96 @@ function Result() {
                     <p className="text-white">| {getformatedDate()}</p>
                   </div>
                 </div>
-                <div className="h-20 w-full  p-2 flex justify-between">
-                  <div className="flex gap-2 ">
-                    <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
-                      Sort By Duration
-                    </button>
-                    <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
-                      Show Available Trains
-                    </button>
-                  </div>
-                  <div className="flex gap-2 justify-around">
-                    <button
-                      onClick={handleprevsearch}
-                      className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
-                    >
-                      Previous Day
-                    </button>
-                    <button
-                      onClick={handlenextsearch}
-                      className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
-                    >
-                      Next Day
-                    </button>
-                  </div>
-                </div>
+                <div className="h-[10vh] w-full p-2 flex flex-col md:flex-row justify-between items-center">
+  <div className="flex flex-wrap gap-2">
+    <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+      Sort By Duration
+    </button>
+    <button className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+      Show Available Trains
+    </button>
+  </div>
+  <div className="flex gap-2 justify-around">
+    <button
+      onClick={handleprevsearch}
+      className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+    >
+      Previous Day
+    </button>
+    <button
+      onClick={handlenextsearch}
+      className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold h-10 w-36 md:h-12 md:w-48 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+    >
+      Next Day
+    </button>
+  </div>
+</div>
+
               </div>
-              <div className="flex flex-col gap-2 p-4">
-                {!trainarray ? (
-                  <p className="text-red-500 font-bold text--xl">
-                    Trains Not Available for this Route
-                  </p>
-                ) : (
-                  trainarray &&
-                  trainarray.map((train, index) => (
-                    <div
-                      key={index}
-                      className="h-80 w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-2 p-2"
-                    >
-                      <div className="flex justify-between">
-                        <p className="text-white text-2xl">
-                          {train?.name}
-                          {`(${train.Train_no})`}
-                        </p>
-                        <div className="flex gap-2 text-white">
-                          Runs On :
-                          {train?.runningDays.map((days) => (
-                            <p className="text-white">{Day[days]}</p>
-                          ))}
-                        </div>
-                        <p
-                          onClick={() => toggleModal(train)}
-                          className=" cursor-pointer text-cyan-500 font-bold text-xl"
-                        >
-                          {" "}
-                          Train Schedule
-                        </p>
-                      </div>
-                      <div className="flex justify-between ">
-                        <div className="text-white text-xl">
-                          {fromstationinfo(train)}
-                        </div>
-                        <p className="text-white text-xl">
-                          {" "}
-                          __________ {calculateDuration(train)} __________{" "}
-                        </p>
-                        <div className="text-white text-xl">
-                          {tostationinfo(train)}
-                        </div>
-                      </div>
-                      <div className="flex gap-2 ">
-                        <button
-                          onClick={() => {
-                            navigate("/seatavailabilty", {
-                              state: {
-                                trainid: train._id,
-                                fromstation: fromstation,
-                                tostation: tostation,
-                                date: dateselect,
-                              },
-                            });
-                          }}
-                          className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
-                        >
-                          Check seat Availabilty and Book Ticket
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
+              <div className="flex flex-col gap-4 p-4">
+  {!trainarray ? (
+    <p className="text-red-500 font-bold text-xl">
+      Trains Not Available for this Route
+    </p>
+  ) : (
+    trainarray &&
+    trainarray.map((train, index) => (
+      <div
+        key={index}
+        className="w-full border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-4 p-4"
+      >
+        <div className="flex flex-col gap-4 md:flex-row md:items-center">
+          <div className="flex justify-between items-center">
+            <p className="text-white text-2xl mb-2 md:mb-0">
+              {train?.name}
+              {`(${train.Train_no})`}
+            </p>
+            <div className="flex gap-2 text-white">
+              <p className="text-white">Runs:</p>
+              {train?.runningDays.map((days) => (
+                <p className="text-white" key={days}>
+                  {Day[days].charAt(0)}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="text-white md:text-xl">
+            {fromstationinfo(train)}
+          </div>
+          <p className="text-white md:text-xl">
+            __________ {calculateDuration(train)} __________
+          </p>
+          <div className="text-white md:text-xl">
+            {tostationinfo(train)}
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            navigate("/seatavailabilty", {
+              state: {
+                trainid: train._id,
+                fromstation: fromstation,
+                tostation: tostation,
+                date: dateselect,
+              },
+            });
+          }}
+          className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+        >
+          Check Seat Availability and Book Ticket
+        </button>
+        <p
+          onClick={() => toggleModal(train)}
+          className="cursor-pointer text-cyan-500 font-bold text-xl"
+        >
+          Train Schedule
+        </p>
+      </div>
+    ))
+  )}
+</div>
+
+
             </div>
           </div>
           {isOpen && (
