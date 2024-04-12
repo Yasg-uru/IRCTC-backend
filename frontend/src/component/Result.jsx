@@ -1147,7 +1147,7 @@ function Result() {
                   trainarray.map((train, index) => (
                     <div
                       key={index}
-                      className="w-full max-w-sm border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-4 p-4"
+                      className="w-full sm:max-w-sm border-2 border-cyan-500 rounded-md shadow-lg shadow-cyan-500 flex flex-col gap-4 p-4"
                     >
                       <div className="flex flex-col gap-4 md:flex-row md:items-center">
                         <div className="flex justify-between items-center">
