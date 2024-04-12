@@ -1035,7 +1035,7 @@ return  (
        
         <div className="p-4 shadow-2xl shadow-white mt-3">
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex gap-2 flex-grow">
+        <div className="flex md:flex-row flex-col gap-2 flex-grow">
           <input
             type="text"
             name="fromstation"
