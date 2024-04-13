@@ -20,11 +20,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    match: [
-      /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/,
-      "Your password must contain At least one uppercase, one lowercase, one digit; 6+ characters; no whitespace.",
-    ],
-
+    minlength: [5, "password must greater than 5 charcter"],
     required: [true, "please enter password"],
   },
 
