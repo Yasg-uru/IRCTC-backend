@@ -51,6 +51,9 @@ export const create_Train = catchasynerror(async (req, res, next) => {
     if (!stationlist) {
       stationlist = stationmodel.create({ stations: [] });
     }
+    if (!stationlist.stations) {
+      stationlist.stations = [];
+    }
     intermediate_stations.forEach((station) => {
       stationlist.stations.push(station);
     });
