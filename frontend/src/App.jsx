@@ -16,6 +16,7 @@ import Updatepassword from "./component/Authcomponents/Updatepassword.jsx";
 import NotfoundPage from "./component/Authcomponents/Notfoundpage.jsx";
 import BookingForm from "./component/BookingForm.jsx";
 import Ticket from "./component/Ticket.jsx";
+import Protectedpage from "./component/Authcomponents/Protectedpage.jsx";
 function App() {
   return (
     <>
@@ -26,14 +27,18 @@ function App() {
         <Route path="/forgotpassword" element={<Forgotpassword/>}/>
         <Route  path="/reset/:token" element={<Resetpassword/>}/> 
         <Route path="/" element={<Homepage />} />
-        <Route path="/updatepassword" element={<Updatepassword/>}/>
         <Route path="/result" element={<Result />} />
         <Route path="/seatavailabilty/" element={<Getseatavialbilityseats />}>
+
+        <Route path="/updatepassword" element={<Updatepassword/>}/>
           <Route path="seat" element={<Seatavailabality />} />
         </Route>
+
+        <Route element={<Protectedpage allowedrole={["user","admin"]}/>}>
         <Route path="/bookticket" element={<Bookticket />} />
         <Route path="/bokingform" element={<BookingForm/>}/>
         <Route path="/printticket" element={<Ticket/>}/>
+        </Route>
         <Route path="/example" element={<Example />}></Route>
         <Route path="*" element={<NotfoundPage/>}/>
       </Routes>
