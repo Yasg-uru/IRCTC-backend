@@ -17,7 +17,7 @@ function Signup() {
     });
   };
   const dispatch = useDispatch();
-
+const navigate=useNavigate()
   function handlesubmit(event) {
     event.preventDefault();
     const { name, email, password } = formdata;
