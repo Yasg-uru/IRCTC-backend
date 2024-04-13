@@ -14,7 +14,7 @@ function getseatavailabilityseats() {
   const [date, setdate] = useState(
     localStorage.getItem("date") || location.state.date
   );
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
   const location = useLocation();
   console.log(
     "this is a location data inside the second last element :",
