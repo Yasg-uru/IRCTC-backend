@@ -2,6 +2,20 @@ import Trainmodel from "../model/train.model.js";
 import catchasynerror from "../middleware/catchasynerror.middleware.js";
 import Errorhandler from "../utils/Errorhandler.utils.js";
 import bookingmodel from "../model/Booking.model.js";
+import stationmodel from "../model/stationlist.model.js";
+export const getstation_list = catchasynerror(async (req, res, next) => {
+  try {
+    const stations = await stationmodel.findOne();
+    if (!stations) {
+      return next(new Errorhandler("stations not found", 404));
+    }
+    res.status(200).json({
+      stations,
+    });
+  } catch (error) {
+    return next(new Errorhandler(error?.message || "internal server Error", 500));
+  }
+});
 export const create_Train = catchasynerror(async (req, res, next) => {
   try {
     const {
@@ -33,6 +47,14 @@ export const create_Train = catchasynerror(async (req, res, next) => {
         category.seats = generateseatnumber();
       });
     });
+    let stationlist = await stationmodel.findOne();
+    if (!stationlist) {
+      stationlist = stationmodel.create({ stations: [] });
+    }
+    intermediate_stations.forEach((station) => {
+      stationlist.stations.push(station);
+    });
+    await stationlist.save();
 
     const train = await Trainmodel.create({
       name,

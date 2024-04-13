@@ -92,7 +92,7 @@
 import { CgArrowsExchangeAltV } from "react-icons/cg";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Searchtrain } from "../reducx-toolkit/TrainSlice";
+import { Searchtrain, getstations } from "../reducx-toolkit/TrainSlice";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import "./Homepage.css";
@@ -104,6 +104,7 @@ function Homepage() {
   const [searchResultsfromstation, setSearchResultsfromstation] = useState([]);
   const [searchResulttostation, setsearchResulttostation] = useState([]);
   const [isLoading, setisLoading] = useState(false);
+  const [mockResults, setmockResults] = useState([]);
   const navigate = useNavigate();
   // const {isLoading,error}=useSelector((state)=>state.train)
   const formRef = useRef(null);
@@ -111,11 +112,15 @@ function Homepage() {
     const currentdate = new Date().toISOString().split("T")[0];
     setselectdate(currentdate);
     document.addEventListener("click", handleoutsideclick);
-
+    dispatch(getstations());
     return () => {
       document.removeEventListener("click", handleoutsideclick);
     };
   }, []);
+  const stationlist = useSelector((state) => state.train.stations);
+  useEffect(() => {
+    setmockResults(stationlist);
+  }, [stationlist]);
   function handleoutsideclick(event) {
     if (formRef.current && !formRef.current.contains(event.target)) {
       setSearchResultsfromstation([]);
@@ -124,7 +129,7 @@ function Homepage() {
   }
   function handlesearchresult(event) {
     const { name, value } = event.target;
-    const mockResults = ["Chhindwara", "Parasia", "Nawegoan"];
+    // const mockResults = ["Chhindwara", "Parasia", "Nawegoan"];
     if (name === "fromstation") {
       setSearchResultsfromstation(
         mockResults.filter((result) =>

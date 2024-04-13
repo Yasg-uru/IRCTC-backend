@@ -9,7 +9,20 @@ const initialState = {
   seat: [],
   coachwiseprice: {},
   seatcharts: [],
+  stations:[]
 };
+export const getstations = createAsyncThunk("/train/stations", async () => {
+  try {
+    const res = await axios.get(`https://irctc-backend.vercel.app/api/Train/stationlist`, {
+      withCredentials: true,
+    });
+    toast.success("fetched successfully station list");
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.error || "Failed to search train");
+    throw error;
+  }
+});
 export const Searchtrain = createAsyncThunk(
   "train/search",
   async (formdata) => {
@@ -193,6 +206,9 @@ const trainSlice = createSlice({
     });
     builder.addCase(getseatscharts.fulfilled, (state, action) => {
       state.seatcharts = action?.payload?.array;
+    });
+    builder.addCase(getstations.fulfilled, (state, action) => {
+      state.stations = action?.payload?.stations?.stations;
     });
   },
 });
