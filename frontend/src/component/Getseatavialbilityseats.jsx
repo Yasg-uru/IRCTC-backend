@@ -24,7 +24,7 @@ function getseatavailabilityseats() {
   const fromstation = localStorage.getItem("fromstation");
   const tostation = localStorage.getItem("tostation");
   useEffect(() => {
-    setisLoading(true);
+    
     dispatch(getseatavailability(location?.state));
     dispatch(Searchtrain({ fromstation, tostation, date }));
     setisLoading(false);

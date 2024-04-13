@@ -14,11 +14,11 @@ function Seatavailabilty({
   from_station,
   to_station,
 }) {
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setisLoading(true);
+    
     dispatch(getseatscharts(locationdata));
     setisLoading(false);
   }, [dispatch, locationdata]);
