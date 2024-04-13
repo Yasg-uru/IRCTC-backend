@@ -6,6 +6,8 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: [true, "please enter your name "],
+    minlength: [3, "name should greater than length of 3 character"],
+    maxlength: [30, "name should contain less then 30 characters"],
   },
   email: {
     type: String,
@@ -18,6 +20,11 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
+    match: [
+      /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/,
+      "Your password must contain At least one uppercase, one lowercase, one digit; 6+ characters; no whitespace.",
+    ],
+
     required: [true, "please enter password"],
   },
 
