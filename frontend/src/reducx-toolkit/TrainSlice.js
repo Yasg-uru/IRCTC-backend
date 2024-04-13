@@ -32,7 +32,8 @@ export const Searchtrain = createAsyncThunk(
       console.log("this is a response data :", response.data);
       return response.data;
     } catch (error) {
-      toast.error("failed to search train");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
@@ -54,9 +55,10 @@ export const getpricecoachwise = createAsyncThunk(
       toast.success("searched successfully");
       return response.data;
     } catch (error) {
-      toast.error("failed to fetch price");
-    }
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
   }
+}
 );
 export const getseatavailability = createAsyncThunk(
   "/train/availability",
@@ -86,7 +88,8 @@ export const getseatavailability = createAsyncThunk(
       toast.success("fetched availabilty of seats ");
       return res.data;
     } catch (error) {
-      toast.error(error?.message || "failed to fetch availability of seats ");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
@@ -109,7 +112,8 @@ export const getseatavailabilityprev = createAsyncThunk(
       toast.success("fetched availabilty of seats ");
       return res.data;
     } catch (error) {
-      toast.error(error?.message || "failed to fetch availability of seats ");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
@@ -132,7 +136,8 @@ export const getseatavailabilitynext = createAsyncThunk(
       toast.success("fetched availabilty of seats ");
       return res.data;
     } catch (error) {
-      toast.error(error?.message || "failed to fetch availability of seats ");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
@@ -160,7 +165,8 @@ export const getseatscharts = createAsyncThunk(
       toast.success("fetched seatcharts successfully");
       return res.data;
     } catch (error) {
-      toast.error(error?.message || "failed to fecth seat charts ");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );

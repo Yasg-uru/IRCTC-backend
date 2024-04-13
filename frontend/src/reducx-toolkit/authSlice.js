@@ -20,7 +20,8 @@ export const signup = createAsyncThunk("/user/register", async (formdata) => {
     toast.success("Your account Created successfully");
     return res.data;
   } catch (error) {
-    toast.error(error?.message || "failed to create new Account ");
+    toast.error(error.response.data.error || "Failed to search train");
+    throw error;
   }
 });
 export const login = createAsyncThunk("/auth/login", async (formdata) => {
@@ -35,7 +36,8 @@ export const login = createAsyncThunk("/auth/login", async (formdata) => {
     toast.success("logged in successfully");
     return res.data;
   } catch (error) {
-    toast.error(error?.message || "failed to login please try again ");
+    toast.error(error.response.data.error || "Failed to search train");
+    throw error;
   }
 });
 export const me = createAsyncThunk("/auth/me", async () => {
@@ -46,7 +48,8 @@ export const me = createAsyncThunk("/auth/me", async () => {
     toast.success("fechted your profile successfully ");
     return res.data;
   } catch (error) {
-    toast.error(error?.message || "failed to fetch your profile data ");
+    toast.error(error.response.data.error || "Failed to search train");
+      throw error;
   }
 });
 export const forgotpassword = createAsyncThunk(
@@ -63,9 +66,8 @@ export const forgotpassword = createAsyncThunk(
       toast.success("mail sent");
       return res.data;
     } catch (error) {
-      toast.error(
-        error?.message || "failed to sent mail please try again later"
-      );
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
@@ -83,9 +85,8 @@ export const resetpassword = createAsyncThunk(
       toast.success("'touur passwword resettedd successfully");
       return res.data;
     } catch (error) {
-      toast.error(
-        error?.message || "failed to reset passord please try again later"
-      );
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
@@ -103,7 +104,8 @@ export const updatepassword = createAsyncThunk(
       toast.success("password updated successfully");
       return res.data;
     } catch (error) {
-      toast.error(error?.message || "failed to update password ");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );

@@ -20,7 +20,8 @@ export const bookingticket = createAsyncThunk(
       toast.success("Ticket Booked successfully");
       return res.data;
     } catch (error) {
-      toast.error(error?.message || "failed to book ticket ");
+      toast.error(error.response.data.error || "Failed to search train");
+      throw error;
     }
   }
 );
