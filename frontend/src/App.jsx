@@ -29,10 +29,10 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/result" element={<Result />} />
         <Route path="/seatavailabilty/" element={<Getseatavialbilityseats />}>
-
-        <Route path="/updatepassword" element={<Updatepassword/>}/>
           <Route path="seat" element={<Seatavailabality />} />
         </Route>
+
+        <Route path="/updatepassword" element={<Updatepassword/>}/>
 
         <Route element={<Protectedpage allowedrole={["user","admin"]}/>}>
         <Route path="/bookticket" element={<Bookticket />} />
