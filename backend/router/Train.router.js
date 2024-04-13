@@ -6,6 +6,7 @@ import {
   getcostofticket,
   gettrains,
   searchtrainbyorigintodestination,
+  getstation_list
 } from "../controller/Train.controller.js";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
 const router = express.Router();
