@@ -17,7 +17,8 @@ function Signup() {
     });
   };
   const dispatch = useDispatch();
-const navigate=useNavigate()
+  const navigate=useNavigate();
+
   function handlesubmit(event) {
     event.preventDefault();
     const { name, email, password } = formdata;
@@ -25,7 +26,6 @@ const navigate=useNavigate()
     if (!name || !email || !password) {
       toast.error("please fill all the details ");
     }
-    const navigate=useNavigate();
     dispatch(signup(formdata));
     setformdata({
       name: "",
