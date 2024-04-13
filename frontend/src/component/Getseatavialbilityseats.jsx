@@ -34,13 +34,16 @@ function getseatavailabilityseats() {
   const { seat } = useSelector((state) => state?.train);
   const navigate = useNavigate();
   const handledatechange = () => {
+    setisLoading(true);
     if (location.state.data) {
       location.state.data.date = date;
+      
       dispatch(getseatavailability(location?.state));
     } else {
       location.state.date = date;
       dispatch(getseatavailability(location?.state));
     }
+    setisLoading(false)
   };
 
   //now writing the logic for rendering the seatavailabilty logic
