@@ -28,8 +28,8 @@ function Login() {
     setisLoading(true);
 
     dispatch(login(formdata));
-    setisLoading(false);
     navigate("/");
+    setisLoading(false);
   }
 
   return isLoading ? (

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingticket } from "../reducx-toolkit/BookingSlice";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 function BookingForm() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function BookingForm() {
     seatNumber: bookingdata.seatNumber,
     categoryName: bookingdata.categoryName,
   });
+  const [isLoading, setisLoading] = useState(false);
   function handlechange(event) {
     const { name, value } = event.target;
     setformdata({
@@ -32,14 +34,15 @@ function BookingForm() {
   const navigate = useNavigate();
   function handlesubmit(event) {
     event.preventDefault();
-    dispatch(bookingticket(formdata)).then(()=>{
+    setisLoading();
+    dispatch(bookingticket(formdata));
 
-      navigate("/printticket")
-    })
-  
-    
+    navigate("/printticket");
+    setisLoading(false);
   }
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="min-h-screen w-full bg-black flex flex-col justify-center items-center">
       <form
         onSubmit={handlesubmit}

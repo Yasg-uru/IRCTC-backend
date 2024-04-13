@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 import { resetpassword } from "../../reducx-toolkit/authSlice";
+import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 function Updatepassword() {
   const [formdata, setformdata] = useState({
     oldpassword: "",
     newpassword: "",
     confirmpassword: "",
   });
+  const [isLoading, setisLoading] = useState(false);
   function handleinputs(event) {
     const { name, value } = event.target;
     setformdata({
@@ -16,17 +19,22 @@ function Updatepassword() {
     });
   }
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   function handlesubmit(event) {
     event.preventDefault();
-    const {newpassword,confirmpassword,oldpassword}=formdata;
-    if(!newpassword || ! confirmpassword || !oldpassword){
-        toast.success("please enter all the fields");
-        return;
+    const { newpassword, confirmpassword, oldpassword } = formdata;
+    if (!newpassword || !confirmpassword || !oldpassword) {
+      toast.success("please enter all the fields");
+      return;
     }
-    dispatch(resetpassword(formdata))
+    setisLoading(true);
+    dispatch(resetpassword(formdata));
+    navigate("/");
+    setisLoading(false);
   }
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="min-h-screen bg-black flex flex-col justify-center items-center">
       <form
         onSubmit={handlesubmit}

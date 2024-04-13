@@ -5,6 +5,7 @@ import { Searchtrain, getseatscharts } from "../reducx-toolkit/TrainSlice";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
 import { bookingticket } from "../reducx-toolkit/BookingSlice";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 function Seatavailabilty({
   coachtype,
   locationdata,
@@ -13,21 +14,13 @@ function Seatavailabilty({
   from_station,
   to_station,
 }) {
-  console.log("this is a coachtype :", coachtype);
-  console.log("this is a locationdata :", locationdata);
-  console.log(
-    "this is a another data props inside the seatavailabilty component :",
-    date,
-    trainid,
-    from_station,
-    to_station
-  );
-  // const location = useLocation();
-
+  const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setisLoading(true);
     dispatch(getseatscharts(locationdata));
+    setisLoading(false);
   }, [dispatch, locationdata]);
 
   const { seatcharts } = useSelector((state) => state.train);
@@ -43,14 +36,15 @@ function Seatavailabilty({
   const navigate = useNavigate();
   const [coach, setcoach] = useState("");
   const [selectseat, setselectseat] = useState(null);
+
   function handlebookticket() {
-    if (!selectseat ) {
+    if (!selectseat) {
       toast.error("please select ticket");
       return;
     }
-    if(selectseat.isBooked===true){
+    if (selectseat.isBooked === true) {
       toast.error("seat is already booked");
-      return ;
+      return;
     }
     const data = {
       trainid,
@@ -63,10 +57,10 @@ function Seatavailabilty({
     };
     // localStorage.setItem("bookingdata",JSON.stringify(data));
     navigate("/bokingform", { state: data });
-
-
   }
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="text-white text-2xl h-[100vh] w-full flex flex-col overflow-y-auto">
       <div className="h-[10vh] w-full p-4">
         <button

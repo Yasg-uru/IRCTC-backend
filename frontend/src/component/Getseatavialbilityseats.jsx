@@ -9,10 +9,12 @@ import {
   getseatavailability,
 } from "../reducx-toolkit/TrainSlice.js";
 import { bookingticket } from "../reducx-toolkit/BookingSlice.js";
+import Loader from "./Loader.jsx";
 function getseatavailabilityseats() {
   const [date, setdate] = useState(
     localStorage.getItem("date") || location.state.date
   );
+  const [isLoading, setisLoading] = useState(false);
   const location = useLocation();
   console.log(
     "this is a location data inside the second last element :",
@@ -22,8 +24,10 @@ function getseatavailabilityseats() {
   const fromstation = localStorage.getItem("fromstation");
   const tostation = localStorage.getItem("tostation");
   useEffect(() => {
+    setisLoading(true);
     dispatch(getseatavailability(location?.state));
     dispatch(Searchtrain({ fromstation, tostation, date }));
+    setisLoading(false);
   }, []);
 
   const { trainarray } = useSelector((state) => state?.train);
@@ -46,9 +50,10 @@ function getseatavailabilityseats() {
     "this is a component that is select coach render ",
     selectcoachRender
   );
-  
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="min-h-screen w-full bg-black flex flex-col gap-2">
       <div className="flex gap-2 items-center cursor-pointer">
         <GrLinkPrevious color="red" size={28} />
@@ -101,7 +106,6 @@ function getseatavailabilityseats() {
         >
           search by date
         </button>
-        
       </div>
       {/* logic for rendering the seatcharts component  */}
       {selectcoachRender && (
@@ -112,7 +116,6 @@ function getseatavailabilityseats() {
           from_station={location?.state?.fromstation}
           to_station={location?.state?.tostation}
           trainid={location?.state?.trainid}
-         
         />
       )}
     </div>
