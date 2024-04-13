@@ -51,18 +51,34 @@ function getseatavailabilityseats() {
   const { trainarray } = useSelector((state) => state?.train);
   const { seat } = useSelector((state) => state?.train);
   const navigate = useNavigate();
+  // const handledatechange = () => {
+  //   setisLoading(true);
+  //   if (location.state.data) {
+  //     location.state.data.date = date;
+      
+  //     dispatch(getseatavailability(location?.state));
+  //   } else {
+  //     location.state.date = date;
+  //     dispatch(getseatavailability(location?.state));
+  //   }
+  //   setisLoading(false)
+  // };
   const handledatechange = () => {
     setisLoading(true);
-    if (location.state.data) {
-      location.state.data.date = date;
-      
-      dispatch(getseatavailability(location?.state));
-    } else {
-      location.state.date = date;
-      dispatch(getseatavailability(location?.state));
-    }
-    setisLoading(false)
+  
+    // Dispatch getseatavailability action
+    dispatch(getseatavailability(location?.state))
+      .then(() => {
+        // Set isLoading to false after the dispatch is completed
+        setisLoading(false);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("Error fetching seat availability:", error);
+        setisLoading(false); // Make sure to set isLoading to false in case of error
+      });
   };
+  
 
   //now writing the logic for rendering the seatavailabilty logic
   const [selectcoachRender, setselectcoachRender] = useState(null);
