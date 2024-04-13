@@ -24,7 +24,7 @@ function getseatavailabilityseats() {
   const fromstation = localStorage.getItem("fromstation");
   const tostation = localStorage.getItem("tostation");
   // useEffect(() => {
-    
+
   //   dispatch(getseatavailability(location?.state));
   //   dispatch(Searchtrain({ fromstation, tostation, date }));
   //   setisLoading(false);
@@ -46,7 +46,6 @@ function getseatavailabilityseats() {
         setisLoading(false); // Make sure to set isLoading to false in case of error
       });
   }, []);
-  
 
   const { trainarray } = useSelector((state) => state?.train);
   const { seat } = useSelector((state) => state?.train);
@@ -55,7 +54,7 @@ function getseatavailabilityseats() {
   //   setisLoading(true);
   //   if (location.state.data) {
   //     location.state.data.date = date;
-      
+
   //     dispatch(getseatavailability(location?.state));
   //   } else {
   //     location.state.date = date;
@@ -65,7 +64,7 @@ function getseatavailabilityseats() {
   // };
   const handledatechange = () => {
     setisLoading(true);
-  
+
     // Dispatch getseatavailability action
     dispatch(getseatavailability(location?.state))
       .then(() => {
@@ -78,7 +77,6 @@ function getseatavailabilityseats() {
         setisLoading(false); // Make sure to set isLoading to false in case of error
       });
   };
-  
 
   //now writing the logic for rendering the seatavailabilty logic
   const [selectcoachRender, setselectcoachRender] = useState(null);

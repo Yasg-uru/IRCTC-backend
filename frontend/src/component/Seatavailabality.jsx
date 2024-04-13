@@ -65,7 +65,7 @@ function Seatavailabilty({
       <div className="h-[10vh] w-full p-4">
         <button
           onClick={handlebookticket}
-          className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white  py-1 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+          className=" text-[10px] bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 text-white  py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
         >
           Select Seat & Book Ticket
         </button>
