@@ -23,12 +23,30 @@ function getseatavailabilityseats() {
   const dispatch = useDispatch();
   const fromstation = localStorage.getItem("fromstation");
   const tostation = localStorage.getItem("tostation");
-  useEffect(() => {
+  // useEffect(() => {
     
-    dispatch(getseatavailability(location?.state));
-    dispatch(Searchtrain({ fromstation, tostation, date }));
-    setisLoading(false);
+  //   dispatch(getseatavailability(location?.state));
+  //   dispatch(Searchtrain({ fromstation, tostation, date }));
+  //   setisLoading(false);
+  // }, []);
+  useEffect(() => {
+    setisLoading(true); // Set loading to true before dispatching actions
+    dispatch(getseatavailability(location?.state))
+      .then(() => {
+        // Dispatch Searchtrain after getseatavailability is completed
+        return dispatch(Searchtrain({ fromstation, tostation, date }));
+      })
+      .then(() => {
+        // Set isLoading to false after both dispatches have completed
+        setisLoading(false);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("Error fetching data:", error);
+        setisLoading(false); // Make sure to set isLoading to false in case of error
+      });
   }, []);
+  
 
   const { trainarray } = useSelector((state) => state?.train);
   const { seat } = useSelector((state) => state?.train);
