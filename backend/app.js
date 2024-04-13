@@ -16,10 +16,10 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(errorHandlerMiddleware);
 
 app.use("/api/user", userRouter);
 app.use("/api/Train", TrainRouter);
 app.use("/api/Book", BookingRouter);
+app.use(errorHandlerMiddleware);
 
 export default app;
