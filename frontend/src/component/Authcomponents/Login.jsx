@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../reducx-toolkit/authSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import Loading from "../Loader.jsx";
 function Login() {
   const [formdata, setformdata] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setisLoading] = useState(false);
   function handlechange(event) {
     const { name, value } = event.target;
     setformdata({
@@ -16,16 +17,24 @@ function Login() {
       [name]: value,
     });
   }
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   function handlesubmitform(event) {
-    if(!formdata.email || !formdata.password){
-      toast.error("please fill all the fields")
-      return ;
+    if (!formdata.email || !formdata.password) {
+      toast.error("please fill all the fields");
+      return;
     }
     event.preventDefault();
+    setisLoading(true);
+
     dispatch(login(formdata));
+    setisLoading(false);
+    navigate("/");
   }
-  return (
+
+  return isLoading ? (
+    <Loading />
+  ) : (
     <div className="min-h-screen bg-black w-full flex flex-col justify-center items-center">
       <form
         onSubmit={handlesubmitform}
