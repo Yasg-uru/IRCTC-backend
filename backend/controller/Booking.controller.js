@@ -25,15 +25,18 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
   //now implementing the logic of the this seatnumber is booked or not at this date for from_station to to_station
   const existingbooking = await BookingModel.find({
     date:stringformatedDate,
-    $or: [
-      { from_station: { $in: [from_station, to_station] } },
-      { to_station: { $in: [from_station, to_station] } },
-    ],
-    seats: {
-      coachType,
-      categoryName,
-      seatNumber,
-    },
+    // $or: [
+    //   { from_station: { $in: [from_station, to_station] } },
+    //   { to_station: { $in: [from_station, to_station] } },
+    // ],
+    // seats: {
+    //   coachType,
+    //   categoryName,
+    //   seatNumber,
+    // },
+    "seats.coachType": coachType,
+    "seats.categoryName": categoryName,
+    "seats.seatNumber": seatNumber,
   });
   // const overlap = existingbooking.some((booking) => {
   //   const isFromStationOverlap =
