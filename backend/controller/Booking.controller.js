@@ -21,9 +21,10 @@ export const CreateBooking = catchasynerror(async (req, res, next) => {
   } = req.body;
   // console.log("this is a request body :", trainid);
   // we will receive this information by the users
+  const stringformatedDate=new Date(date);
   //now implementing the logic of the this seatnumber is booked or not at this date for from_station to to_station
   const existingbooking = await BookingModel.find({
-    date,
+    date:stringformatedDate,
     $or: [
       { from_station: { $in: [from_station, to_station] } },
       { to_station: { $in: [from_station, to_station] } },
