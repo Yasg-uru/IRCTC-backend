@@ -2,7 +2,7 @@ import User from "../model/user.model.js";
 import catchasyncerror from "../middleware/catchasynerror.middleware.js";
 import Errorhandler from "../utils/Errorhandler.utils.js";
 import sendtokenUtil from "../utils/sendtoken.util.js";
-import sendmail from "../utils/sendmail.util.js"
+import sendmail from "../utils/sendmail.util.js";
 
 export const createuser = catchasyncerror(async (req, res, next) => {
   try {
@@ -15,7 +15,6 @@ export const createuser = catchasyncerror(async (req, res, next) => {
       email,
       password,
       // profile
-      
     });
     sendtokenUtil(200, res, user);
   } catch (error) {
@@ -25,7 +24,7 @@ export const createuser = catchasyncerror(async (req, res, next) => {
 export const login = catchasyncerror(async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log("this is a email and password:",email+"      "+password)
+    console.log("this is a email and password:", email + "      " + password);
     if (!email || !password) {
       return next(new Errorhandler("please Enter correct Email or password"));
     }
@@ -33,8 +32,8 @@ export const login = catchasyncerror(async (req, res, next) => {
     if (!user) {
       return next(new Errorhandler("'please enter correct email or password"));
     }
-    console.log("this is a user in login form :",user)
-    const compare =  await user.comparepassword(password);
+    console.log("this is a user in login form :", user);
+    const compare = await user.comparepassword(password);
     if (!compare) {
       return next(new Errorhandler("please enter correct email or password"));
     }
@@ -53,25 +52,24 @@ export const logout = catchasyncerror(async (req, res, next) => {
     message: "logout successfully",
   });
 });
-export const getdetail=catchasyncerror(async (req,res,next)=>{
-  const user=User.findById(req.user._id);
-  if(!user){
-      return next(new Errorhandler("user not found",404));
-
+export const getdetail = catchasyncerror(async (req, res, next) => {
+  const user = User.findById(req.user._id);
+  if (!user) {
+    return next(new Errorhandler("user not found", 404));
   }
   res.status(200).json({
-      success:true,
-      user
-  })
-})
+    success: true,
+    user,
+  });
+});
 
 export const forgotpassword = catchasyncerror(async (req, res, next) => {
-console.log("this is a email:",req.body.email)
+  console.log("this is a email:", req.body.email);
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new Errorhandler("user not found", 404));
   }
-  const token =await user.getresetpasswordtoken();
+  const token = await user.getresetpasswordtoken();
   await user.save({ validateBeforeSave: false });
 
   const resetPassword = `https://irctc-backend-mmjp.vercel.app/reset/${token}`;
@@ -96,7 +94,7 @@ console.log("this is a email:",req.body.email)
   }
 });
 
- export const resetpassword = catchasyncerror(async (req, res, next) => {
+export const resetpassword = catchasyncerror(async (req, res, next) => {
   // now we have resetpassword token and their time
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -183,7 +181,7 @@ export const updateuserprofile = catchasyncerror(async (req, res, next) => {
 //update particular user
 export const updateuserrole = catchasyncerror(async (req, res, next) => {
   const user = await User.findById(req.params.id);
-  console.log("update role is called"+req.body.role)
+  console.log("update role is called" + req.body.role);
   const newuser = {
     role: req.body.role,
   };
@@ -213,3 +211,15 @@ export const deleteuser = catchasyncerror(async (req, res, next) => {
   });
 });
 
+export const verifyAuth = catchasyncerror(async (req, res, next) => {
+  const user = req.user;
+  if (!user) {
+    return next(
+      new Errorhandler("please login your token has been expired", 400)
+    );
+  }
+  res.status(200).json({
+    message: "auth verified successfully",
+    user,
+  });
+});

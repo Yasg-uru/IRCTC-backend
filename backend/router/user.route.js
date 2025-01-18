@@ -16,10 +16,11 @@ import {
   updatepassword,
   updateuserprofile,
   updateuserrole,
+  verifyAuth,
 } from "../controller/user.controller.js";
 
 const router = express.Router();
-router.route("/register").post( createuser);
+router.route("/register").post(createuser);
 router.route("/login").post(login);
 router.route("/logout").post(logout);
 router.route("/me").get(isAuthenticated, getdetail);
@@ -40,5 +41,6 @@ router
 router
   .route("/deleteuser/:id")
   .delete(isAuthenticated, authorization("admin"), deleteuser);
+router.get("/check-auth", isAuthenticated, verifyAuth);
 
 export default router;

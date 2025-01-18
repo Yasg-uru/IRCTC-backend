@@ -9,7 +9,7 @@ import { errorHandlerMiddleware } from "./utils/Errorhandler.utils.js";
 const app = express();
 app.use(
   cors({
-    origin: "https://irctc-backend-mmjp.vercel.app",
+    origin: ["https://irctc-backend-mmjp.vercel.app",'http://localhost:5173'],
     credentials: true,
   })
 );

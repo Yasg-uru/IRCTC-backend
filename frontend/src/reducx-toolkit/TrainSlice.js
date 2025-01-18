@@ -3,17 +3,17 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const initialState = {
-  trainarray:  [],
+  trainarray: [],
   fromstation: localStorage.getItem("fromstation") || "",
   tostation: localStorage.getItem("tostation") || "",
   seat: [],
   coachwiseprice: {},
   seatcharts: [],
-  stations:[]
+  stations: [],
 };
 export const getstations = createAsyncThunk("/train/stations", async () => {
   try {
-    const res = await axios.get(`https://irctc-backend.vercel.app/api/Train/stationlist`, {
+    const res = await axios.get(`http://localhost:4000/api/Train/stationlist`, {
       withCredentials: true,
     });
     toast.success("fetched successfully station list");
@@ -29,10 +29,10 @@ export const Searchtrain = createAsyncThunk(
     try {
       localStorage.setItem("fromstation", formdata.fromstation);
       localStorage.setItem("tostation", formdata.tostation);
-      localStorage.setItem("date",formdata.date)
-      console.log("this is a date for formdata ",formdata.date)
+      localStorage.setItem("date", formdata.date);
+      console.log("this is a date for formdata ", formdata.date);
       const response = await axios.post(
-        `https://irctc-backend.vercel.app/api/Train/search`,
+        `http://localhost:4000/api/Train/search`,
         formdata,
         {
           withCredentials: true,
@@ -57,7 +57,7 @@ export const getpricecoachwise = createAsyncThunk(
     console.log("this is a price formdata :", formdata);
     try {
       const response = await axios.post(
-        `https://irctc-backend.vercel.app/api/Train/price/ticket`,
+        `http://localhost:4000/api/Train/price/ticket`,
         formdata,
         {
           withCredentials: true,
@@ -70,8 +70,8 @@ export const getpricecoachwise = createAsyncThunk(
     } catch (error) {
       toast.error(error.response.data.error || "Failed to search train");
       throw error;
+    }
   }
-}
 );
 export const getseatavailability = createAsyncThunk(
   "/train/availability",
@@ -89,10 +89,8 @@ export const getseatavailability = createAsyncThunk(
 
     try {
       const res = await axios.post(
-        `https://irctc-backend.vercel.app/api/Train/getavailability`,
-        maindata,
-
-       
+        `http://localhost:4000/api/Train/getavailability`,
+        maindata
       );
       console.log(
         "this is a formdata inside the getseatavailability :",
@@ -111,7 +109,7 @@ export const getseatavailabilityprev = createAsyncThunk(
   async (formdata) => {
     try {
       const res = await axios.post(
-        `https://irctc-backend.vercel.app/api/Train/getavailability?previousdate=true`,
+        `http://localhost:4000/api/Train/getavailability?previousdate=true`,
         formdata,
 
         {
@@ -135,7 +133,7 @@ export const getseatavailabilitynext = createAsyncThunk(
   async (formdata) => {
     try {
       const res = await axios.post(
-        `https://irctc-backend.vercel.app/api/Train/getavailability?nextdate=true`,
+        `http://localhost:4000/api/Train/getavailability?nextdate=true`,
         formdata,
 
         {
@@ -169,7 +167,7 @@ export const getseatscharts = createAsyncThunk(
     }
     try {
       const res = await axios.post(
-        `https://irctc-backend.vercel.app/api/Train/assignseat`,
+        `http://localhost:4000/api/Train/assignseat`,
         formdata,
         {
           withCredentials: true,

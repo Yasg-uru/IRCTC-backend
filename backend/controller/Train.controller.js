@@ -13,7 +13,9 @@ export const getstation_list = catchasynerror(async (req, res, next) => {
       stations,
     });
   } catch (error) {
-    return next(new Errorhandler(error?.message || "internal server Error", 500));
+    return next(
+      new Errorhandler(error?.message || "internal server Error", 500)
+    );
   }
 });
 export const create_Train = catchasynerror(async (req, res, next) => {
@@ -80,13 +82,50 @@ export const create_Train = catchasynerror(async (req, res, next) => {
     return next(new Errorhandler(error?.message, 500));
   }
 });
-export const gettrains=catchasynerror(async(req,res,next)=>{
-  const train=await Trainmodel.find();
+export const gettrains = catchasynerror(async (req, res, next) => {
+  const train = await Trainmodel.find();
   res.status(200).json({
-    success:true,
-    train
-  })
-})
+    success: true,
+    train,
+  });
+});
+export const getTrains = catchasynerror(async (req, res, next) => {
+  try {
+    let { page, limit } = req.query;
+
+    // Convert page and limit to numbers and set defaults
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    if (page < 1) {
+      return res.status(400).json({ error: "Page number must be at least 1" });
+    }
+
+    const skip = (page - 1) * limit;
+
+    // Fetch trains with pagination
+    const trains = await Trainmodel.find().skip(skip).limit(limit);
+
+    // Get total count of trains
+    const totalTrains = await Trainmodel.countDocuments();
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalTrains / limit);
+
+    res.status(200).json({
+      success: true,
+      page,
+      limit,
+      totalPages,
+      totalTrains,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+      trains,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Server Error", message: error.message });
+  }
+});
 export const searchtrainbyorigintodestination = catchasynerror(
   async (req, res, next) => {
     try {
@@ -260,7 +299,7 @@ export const getseatavailabilityofallthetrains = catchasynerror(
   }
 );
 
- export function getSeatType(seatNumber) {
+export function getSeatType(seatNumber) {
   // Calculate theseatNumber when dividing seatNumber by 16
 
   // Determine the seat type based on theseatNumber

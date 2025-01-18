@@ -17,30 +17,32 @@ import NotfoundPage from "./component/Authcomponents/Notfoundpage.jsx";
 import BookingForm from "./component/BookingForm.jsx";
 import Ticket from "./component/Ticket.jsx";
 import Protectedpage from "./component/Authcomponents/Protectedpage.jsx";
+import Trains from "./component/trains/Trains.jsx";
 function App() {
   return (
     <>
       <Navbar />
       <Routes>
+        <Route path="/trains" element={<Trains />} />
         <Route path="/register" element={<Signup />}></Route>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/forgotpassword" element={<Forgotpassword/>}/>
-        <Route  path="/reset/:token" element={<Resetpassword/>}/> 
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgotpassword" element={<Forgotpassword />} />
+        <Route path="/reset/:token" element={<Resetpassword />} />
         <Route path="/" element={<Homepage />} />
         <Route path="/result" element={<Result />} />
         <Route path="/seatavailabilty/" element={<Getseatavialbilityseats />}>
           <Route path="seat" element={<Seatavailabality />} />
         </Route>
 
-        <Route path="/updatepassword" element={<Updatepassword/>}/>
+        <Route path="/updatepassword" element={<Updatepassword />} />
 
-        <Route element={<Protectedpage allowedrole={["user","admin"]}/>}>
-        <Route path="/bookticket" element={<Bookticket />} />
-        <Route path="/bokingform" element={<BookingForm/>}/>
-        <Route path="/printticket" element={<Ticket/>}/>
+        <Route element={<Protectedpage allowedrole={["user", "admin"]} />}>
+          <Route path="/bookticket" element={<Bookticket />} />
+          <Route path="/bokingform" element={<BookingForm />} />
+          <Route path="/printticket" element={<Ticket />} />
         </Route>
         <Route path="/example" element={<Example />}></Route>
-        <Route path="*" element={<NotfoundPage/>}/>
+        <Route path="*" element={<NotfoundPage />} />
       </Routes>
     </>
   );
