@@ -13,7 +13,7 @@ const AuthContextProvider = ({ children }) => {
 
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/user/check-auth`,
+        `https://irctc-backend.vercel.app/api/user/check-auth`,
         {
           withCredentials: true,
         }
@@ -32,7 +32,7 @@ const AuthContextProvider = ({ children }) => {
     setisLoading(true);
     try {
       await axios.post(
-        `http://localhost:4000/api/user/logout`,
+        `https://irctc-backend.vercel.app/api/user/logout`,
         {},
         { withCredentials: true }
       );

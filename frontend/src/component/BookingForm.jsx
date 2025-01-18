@@ -51,7 +51,7 @@ function BookingForm() {
     try {
       // API call to book the ticket
       const res = await axios.post(
-        "http://localhost:4000/api/Book/seatBooking",
+        "https://irctc-backend.vercel.app/api/Book/seatBooking",
         formdata,
         { withCredentials: true }
       );

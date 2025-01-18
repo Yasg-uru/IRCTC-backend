@@ -7,7 +7,7 @@ export default function Trains() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/Train/get-trains")
+    fetch("https://irctc-backend.vercel.app/api/Train/get-trains")
       .then((response) => response.json())
       .then((data) => setTrains(data.trains))
       .catch((error) => console.error("Error fetching trains:", error));
