@@ -9,7 +9,7 @@ const sendEmail = async (options) => {
         auth: {
             user: 'yashpawar12122004@gmail.com',
             // user: process.env.SMPT_MAIL,
-            pass: 'nwxb yuwl uioz dzkc',
+            pass: "arhj ynqn zxbk dncj",
             // pass: 'yash1212204',
         },
     });
