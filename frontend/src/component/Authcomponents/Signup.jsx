@@ -3,7 +3,9 @@ import { useDispatch } from "react-redux";
 import { signup } from "../../reducx-toolkit/authSlice";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../contexts/authContexts";
 function Signup() {
+  const { checkAuth } = useAuthContext();
   const [formdata, setformdata] = useState({
     name: "",
     email: "",
@@ -17,7 +19,7 @@ function Signup() {
     });
   };
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   function handlesubmit(event) {
     event.preventDefault();
@@ -26,13 +28,15 @@ function Signup() {
     if (!name || !email || !password) {
       toast.error("please fill all the details ");
     }
-    dispatch(signup(formdata));
+    dispatch(signup(formdata)).then(() => {
+      checkAuth();
+    });
     setformdata({
       name: "",
       email: "",
       password: "",
     });
-    navigate("/")
+    navigate("/");
     console.log("this is a formdata of the signup :", formdata);
   }
   return (

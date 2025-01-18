@@ -144,14 +144,25 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <button
-          onClick={() => {
-            navigate("/register");
-          }}
-          className="bg-gradient-to-r from-purple-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-        >
-          Register
-        </button>
+        {isAuthenticated ? (
+          <button
+            onClick={() => {
+              logout();
+            }}
+            className="bg-gradient-to-r from-purple-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Logout
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              navigate("/register");
+            }}
+            className="bg-gradient-to-r from-purple-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Register
+          </button>
+        )}
       </div>
     </nav>
   );

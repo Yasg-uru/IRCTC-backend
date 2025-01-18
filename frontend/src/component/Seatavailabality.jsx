@@ -18,7 +18,6 @@ function Seatavailabilty({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
     dispatch(getseatscharts(locationdata));
     setisLoading(false);
   }, [dispatch, locationdata]);
@@ -36,7 +35,7 @@ function Seatavailabilty({
   const navigate = useNavigate();
   const [coach, setcoach] = useState("");
   const [selectseat, setselectseat] = useState(null);
-const [activecoach,setactivecoach]=useState(null)
+  const [activecoach, setactivecoach] = useState(null);
   function handlebookticket() {
     if (!selectseat) {
       toast.error("please select ticket");
@@ -76,9 +75,11 @@ const [activecoach,setactivecoach]=useState(null)
             key={category}
             onClick={() => {
               setcoach(category);
-              setactivecoach(category)
+              setactivecoach(category);
             }}
-            className={`border-[1.5px] border-white text-green-500 shadow-2xl shadow-cyan-500 h-[50px] w-[100px] rounded-lg ${activecoach===category && `bg-green-600 text-white`  }`}
+            className={`border-[1.5px] border-white text-green-500 shadow-2xl shadow-cyan-500 h-[50px] w-[100px] rounded-lg ${
+              activecoach === category && `bg-green-600 text-white`
+            }`}
           >
             {category}
           </button>

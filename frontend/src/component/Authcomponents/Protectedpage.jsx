@@ -10,13 +10,17 @@ function Protectedpage({ allowedrole }) {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/register");
-    } else if (!allowedrole.includes(role)) {
+    } else if (
+      AuthUser &&
+      AuthUser?.role &&
+      !allowedrole.includes(AuthUser.role)
+    ) {
       navigate("/register");
     }
-  }, [isLoggedIn, location, AuthUser, navigate]);
+  }, [isAuthenticated, location, AuthUser, navigate]);
   return (
     <>
-      {isLoggedIn && AuthUser && allowedrole.includes(AuthUser?.role) && (
+      {isAuthenticated && AuthUser && allowedrole.includes(AuthUser?.role) && (
         <Outlet />
       )}
     </>

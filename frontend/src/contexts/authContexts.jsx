@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 const authContext = createContext(undefined);
 
 const AuthContextProvider = ({ children }) => {
@@ -17,10 +18,12 @@ const AuthContextProvider = ({ children }) => {
           withCredentials: true,
         }
       );
+      toast.success("auth checked successfully");
       setAuthUser(response.data.user);
       setIsAuthenticated(true);
     } catch (error) {
       setIsAuthenticated(false);
+      toast.error("failed to check auth");
     } finally {
       setisLoading(false);
     }
@@ -52,7 +55,7 @@ const AuthContextProvider = ({ children }) => {
   }, []);
   return (
     <authContext.Provider
-      value={{ isLoading, isAuthenticated, AuthUser, logout }}
+      value={{ isLoading, isAuthenticated, AuthUser, logout, checkAuth }}
     >
       {children}
     </authContext.Provider>
